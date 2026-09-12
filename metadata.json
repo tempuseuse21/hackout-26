@@ -1,0 +1,6 @@
+{
+  "name": "REC-GUARD AI",
+  "description": "AI-Powered Renewable Energy Certificate Fraud Detection & Trust Platform with explainable risk intelligence and tamper-evident lifecycle tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
