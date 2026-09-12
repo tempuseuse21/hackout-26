@@ -19,32 +19,32 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ isOpen, 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-white border border-slate-200 rounded-xl w-full max-w-5xl h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in">
+      <div className="bg-white border border-slate-200 rounded-xl w-full max-w-5xl h-[92vh] sm:h-[88vh] flex flex-col shadow-2xl overflow-hidden">
         {/* Modal Header */}
-        <div className="p-4 md:px-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center">
+        <div className="p-3 sm:p-4 md:px-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+          <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
+            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
               <BookOpen className="w-4 h-4" />
             </div>
-            <div>
-              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                <span>REC-GUARD AI Architecture & System Blueprint</span>
+            <div className="min-w-0">
+              <h3 className="text-sm sm:text-base font-bold text-slate-900 flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span>REC-GUARD AI Architecture</span>
                 <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">Hackathon Dossier</span>
               </h3>
-              <p className="text-xs text-slate-500">Enterprise REC Fraud Detection, AI Pipeline, and Tamper-Evident Ledger Specifications</p>
+              <p className="text-[11px] sm:text-xs text-slate-500 truncate">Enterprise REC Fraud Detection, AI Pipeline, and Ledger Specifications</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors shrink-0"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Sub-nav tabs */}
-        <div className="flex items-center gap-1 px-6 border-b border-slate-200 bg-white overflow-x-auto">
+        <div className="flex items-center gap-1 px-3 sm:px-6 border-b border-slate-200 bg-white overflow-x-auto">
           {[
             { id: 'overview', label: '1. Architecture & Threat Model', icon: Shield },
             { id: 'schema', label: '2. PostgreSQL DDL Schema', icon: Database },

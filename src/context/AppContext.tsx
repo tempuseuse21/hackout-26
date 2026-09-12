@@ -8,7 +8,8 @@ import {
   AlertStatus, 
   InvestigationNote, 
   UserRole,
-  AuditLogEntry 
+  AuditLogEntry,
+  toCanonicalRole 
 } from '../types';
 import { 
   DEMO_USERS, 
@@ -135,17 +136,75 @@ interface AppContextType {
   // Reset & Generation actions
   regenerateData: (count: number) => void;
   inspectRec: (recId: string) => void;
+
+  // RBAC Routing & Navigation
+  currentPath: string;
+  navigateToPath: (path: string) => void;
+  navigateToRoleDashboard: () => void;
+
+  // Responsive Layout State
+  isMobileMenuOpen: boolean;
+  setIsMobileMenuOpen: (open: boolean) => void;
+  isSidebarCollapsed: boolean;
+  setIsSidebarCollapsed: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleSidebarCollapsed: () => void;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // Current user / demo role
-  const [currentUser, setCurrentUser] = useState<UserProfile>(DEMO_USERS[0]); // Default Admin / Regulator
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true);
+  // Current user / session state from authoritative auth service
+  const initialSessionUser = authService.getCurrentUser();
+  const [currentUser, setCurrentUser] = useState<UserProfile>(initialSessionUser || DEMO_USERS[0]);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(authService.isAuthenticated());
   const [activeTab, setActiveTab] = useState<AppTab>('dashboard');
   const [isAddRecOpen, setIsAddRecOpen] = useState<boolean>(false);
   const [auditLogs, setAuditLogs] = useState<AuditLogEntry[]>(INITIAL_AUDIT_LOGS);
+
+  // Browser URL / Path State for RBAC Routing
+  const [currentPath, setCurrentPath] = useState<string>(() => {
+    if (typeof window !== 'undefined' && window.location.pathname && window.location.pathname !== '/') {
+      return window.location.pathname;
+    }
+    // If authenticated, default to role dashboard; otherwise /login
+    if (initialSessionUser) {
+      return `/${toCanonicalRole(initialSessionUser.role).toLowerCase()}/dashboard`;
+    }
+    return '/login';
+  });
+
+  // Responsive Drawer & Sidebar Collapsed States
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState<boolean>(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState<boolean>(false);
+
+  const toggleSidebarCollapsed = useCallback(() => {
+    setIsSidebarCollapsed(prev => !prev);
+  }, []);
+
+  const navigateToPath = useCallback((path: string) => {
+    setCurrentPath(path);
+    setIsMobileMenuOpen(false);
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', path);
+    }
+  }, []);
+
+  const navigateToRoleDashboard = useCallback(() => {
+    const canonical = toCanonicalRole(currentUser.role).toLowerCase();
+    const targetPath = `/${canonical}/dashboard`;
+    navigateToPath(targetPath);
+  }, [currentUser.role, navigateToPath]);
+
+  // Sync with browser back / forward navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      if (typeof window !== 'undefined') {
+        setCurrentPath(window.location.pathname || '/');
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
   
   // REC Data: initialize with 1000 records
   const [recs, setRecs] = useState<RECRecord[]>(() => {
@@ -228,11 +287,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (result.success && result.user) {
       setCurrentUser(result.user);
       setIsAuthenticated(true);
+      const canonical = toCanonicalRole(result.user.role).toLowerCase();
+      const targetPath = `/${canonical}/dashboard`;
+      setCurrentPath(targetPath);
+      if (typeof window !== 'undefined') {
+        window.history.pushState({}, '', targetPath);
+      }
       setActiveTab('dashboard');
       addToast({
         type: 'success',
         title: 'Authenticated Successfully',
-        message: `Signed in as ${result.user.name} (${result.user.role.replace('_', ' ')})`
+        message: `Signed in as ${result.user.name} (${canonical.toUpperCase()})`
       });
       addAuditLog({
         userId: result.user.id,
@@ -241,7 +306,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         action: 'USER_LOGIN',
         ipAddress: '192.168.1.10',
         result: 'SUCCESS',
-        details: `Signed into REC-GUARD AI via secure role authentication (${result.user.role}).`
+        details: `Signed into REC-GUARD AI via secure role authentication (${result.user.role}). Redirected to ${targetPath}.`
       });
       return true;
     }
@@ -253,11 +318,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     if (result.success && result.user) {
       setCurrentUser(result.user);
       setIsAuthenticated(true);
+      const canonical = toCanonicalRole(result.user.role).toLowerCase();
+      const targetPath = `/${canonical}/dashboard`;
+      setCurrentPath(targetPath);
+      if (typeof window !== 'undefined') {
+        window.history.pushState({}, '', targetPath);
+      }
       setActiveTab('dashboard');
       addToast({
         type: 'success',
         title: 'Role Session Activated',
-        message: `Operating as ${result.user.name} (${result.user.role.replace('_', ' ')})`
+        message: `Operating as ${result.user.name} (${canonical.toUpperCase()})`
       });
       addAuditLog({
         userId: result.user.id,
@@ -266,7 +337,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         action: 'ROLE_LOGIN_DIRECT',
         ipAddress: '192.168.1.10',
         result: 'SUCCESS',
-        details: `Direct role login activated for ${result.user.role}.`
+        details: `Direct role login activated for ${result.user.role}. Redirected to ${targetPath}.`
       });
       return true;
     }
@@ -274,6 +345,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, [addToast, addAuditLog]);
 
   const logout = useCallback(() => {
+    authService.logout();
     addAuditLog({
       userId: currentUser.id,
       userName: currentUser.name,
@@ -285,10 +357,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     });
     setIsAuthenticated(false);
     setActiveTab('login');
+    setCurrentPath('/login');
+    if (typeof window !== 'undefined') {
+      window.history.pushState({}, '', '/login');
+    }
     addToast({
       type: 'info',
       title: 'Signed Out',
-      message: 'You have been signed out of REC-GUARD AI.'
+      message: 'Session closed securely.'
     });
   }, [currentUser, addAuditLog, addToast]);
 
@@ -918,7 +994,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         addToast,
         removeToast,
         regenerateData,
-        inspectRec
+        inspectRec,
+        currentPath,
+        navigateToPath,
+        navigateToRoleDashboard,
+        isMobileMenuOpen,
+        setIsMobileMenuOpen,
+        isSidebarCollapsed,
+        setIsSidebarCollapsed,
+        toggleSidebarCollapsed
       }}
     >
       {children}

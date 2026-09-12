@@ -3,7 +3,28 @@ export type AlertSeverity = 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
 
 export type RECStatus = 'ACTIVE' | 'FLAGGED' | 'SUSPENDED' | 'TRANSFERRED' | 'RETIRED';
 
-export type UserRole = 'ADMIN' | 'REGULATOR' | 'CERTIFICATE_ISSUER' | 'AUDITOR' | 'CORPORATE_BUYER';
+export type CanonicalRole = 'ADMIN' | 'ISSUER' | 'BUYER' | 'AUDITOR';
+
+export type UserRole = 
+  | 'ADMIN' 
+  | 'REGULATOR' 
+  | 'ISSUER' 
+  | 'CERTIFICATE_ISSUER' 
+  | 'AUDITOR' 
+  | 'BUYER' 
+  | 'CORPORATE_BUYER';
+
+export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'PENDING';
+
+export function toCanonicalRole(role?: string): CanonicalRole {
+  if (!role) return 'BUYER';
+  const clean = role.trim().toUpperCase();
+  if (clean === 'ADMIN' || clean === 'REGULATOR') return 'ADMIN';
+  if (clean === 'ISSUER' || clean === 'CERTIFICATE_ISSUER') return 'ISSUER';
+  if (clean === 'BUYER' || clean === 'CORPORATE_BUYER') return 'BUYER';
+  if (clean === 'AUDITOR') return 'AUDITOR';
+  return 'BUYER';
+}
 
 export interface UserProfile {
   id: string;
@@ -12,6 +33,9 @@ export interface UserProfile {
   role: UserRole;
   organization: string;
   badge: string;
+  status?: UserStatus;
+  createdAt?: string;
+  lastLogin?: string;
 }
 
 export interface AuditLogEntry {

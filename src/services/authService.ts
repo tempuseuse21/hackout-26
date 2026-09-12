@@ -3,8 +3,14 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { UserProfile, UserRole } from '../types';
+import { UserProfile, UserRole, CanonicalRole, toCanonicalRole } from '../types';
 import { DEMO_USERS } from '../data/seedData';
+import { 
+  apiFetch, 
+  getStoredSessionToken, 
+  setStoredSessionToken, 
+  clearStoredSessionToken 
+} from './apiClient';
 
 export type DemoRoleKey = 'admin' | 'auditor' | 'issuer' | 'buyer';
 
@@ -45,7 +51,7 @@ export const DEMO_CREDENTIALS: Record<DemoRoleKey, DemoCredential> = {
   issuer: {
     username: 'issuer',
     password: 'password123',
-    role: 'CERTIFICATE_ISSUER',
+    role: 'ISSUER',
     displayName: 'Marcus Vance',
     organization: 'GreenAttribute Registry Services',
     badge: 'Accredited Issuer Admin',
@@ -54,7 +60,7 @@ export const DEMO_CREDENTIALS: Record<DemoRoleKey, DemoCredential> = {
   buyer: {
     username: 'buyer',
     password: 'password123',
-    role: 'CORPORATE_BUYER',
+    role: 'BUYER',
     displayName: 'David K. Miller',
     organization: 'AeroTech Global Technologies (Scope 2 Procurement)',
     badge: 'Sustainability Director',
@@ -62,9 +68,6 @@ export const DEMO_CREDENTIALS: Record<DemoRoleKey, DemoCredential> = {
   }
 };
 
-/**
- * Map flexible role/username strings into normalized DemoRoleKey
- */
 export function normalizeRoleKey(input: string): DemoRoleKey | null {
   const clean = input.trim().toLowerCase();
   if (clean === 'admin' || clean === 'administrator' || clean === 'regulator') return 'admin';
@@ -74,17 +77,18 @@ export function normalizeRoleKey(input: string): DemoRoleKey | null {
   return null;
 }
 
+export function getRoleDashboardPath(role: UserRole | string): string {
+  const canonical = toCanonicalRole(role);
+  return `/${canonical.toLowerCase()}/dashboard`;
+}
+
 export interface AuthResult {
   success: boolean;
   user?: UserProfile;
+  token?: string;
   error?: string;
 }
 
-/**
- * Authentication service with role-based login logic
- * Accepts 'admin', 'auditor', 'issuer', and 'buyer' roles or usernames,
- * as well as emails and standard passwords ('password123' or existing demo passwords).
- */
 export const authService = {
   getDemoCredentials: () => DEMO_CREDENTIALS,
 
@@ -92,21 +96,109 @@ export const authService = {
     return DEMO_CREDENTIALS[role];
   },
 
+  getRoleDashboardPath,
+
+  getToken: (): string | null => {
+    return getStoredSessionToken();
+  },
+
+  isAuthenticated: (): boolean => {
+    return !!getStoredSessionToken();
+  },
+
+  getCurrentUser: (): UserProfile | null => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const raw = window.localStorage.getItem('rec_guard_user_session');
+        if (raw) {
+          return JSON.parse(raw);
+        }
+      }
+    } catch {
+      // Ignore parse failure
+    }
+    return null;
+  },
+
+  setCurrentUserCache: (user: UserProfile | null) => {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        if (user) {
+          window.localStorage.setItem('rec_guard_user_session', JSON.stringify(user));
+        } else {
+          window.localStorage.removeItem('rec_guard_user_session');
+        }
+      }
+    } catch {
+      // Ignore storage failure
+    }
+  },
+
   /**
-   * Role-based login function
-   * Accepts identifier ('admin', 'auditor', 'issuer', 'buyer', role names, or email)
-   * and optional password (defaulting or checking 'password123').
+   * Authoritative backend login.
+   * Calls POST /api/auth/login and stores session token.
+   */
+  loginWithBackend: async (identifier: string, password?: string): Promise<AuthResult> => {
+    try {
+      const res = await apiFetch('/api/auth/login', {
+        method: 'POST',
+        body: JSON.stringify({ identifier, password })
+      });
+
+      if (res.ok && res.data?.token && res.data?.user) {
+        setStoredSessionToken(res.data.token);
+        authService.setCurrentUserCache(res.data.user);
+        return {
+          success: true,
+          token: res.data.token,
+          user: res.data.user
+        };
+      }
+
+      // If backend responded with explicit error
+      if (res.status === 401 || res.status === 403) {
+        return {
+          success: false,
+          error: res.error || 'Invalid credentials'
+        };
+      }
+    } catch {
+      // Network or offline fallback
+    }
+
+    // Fallback to local synchronous validation if server endpoint is unreachable
+    return authService.authenticate(identifier, password);
+  },
+
+  /**
+   * Verify currently stored token with backend /api/auth/me
+   */
+  fetchCurrentUser: async (): Promise<UserProfile | null> => {
+    const token = getStoredSessionToken();
+    if (!token) return null;
+
+    try {
+      const res = await apiFetch('/api/auth/me');
+      if (res.ok && res.data?.user) {
+        return res.data.user;
+      }
+    } catch {
+      // Ignore network errors
+    }
+
+    return null;
+  },
+
+  /**
+   * Synchronous validation fallback
    */
   authenticate: (identifier: string, password?: string): AuthResult => {
     const raw = identifier.trim().toLowerCase();
-    
-    // 1. Direct role key check ('admin', 'auditor', 'issuer', 'buyer')
     const roleKey = normalizeRoleKey(raw);
     
     if (roleKey && DEMO_CREDENTIALS[roleKey]) {
       const cred = DEMO_CREDENTIALS[roleKey];
       
-      // If password provided, verify against standard demo password or bypass if empty/quick login
       if (password && password.trim() !== '') {
         const cleanPass = password.trim();
         const validPasswords = ['password123', 'admin@2025!', 'audit@2025!', 'issuer@2025!', 'buyer@2025!'];
@@ -118,69 +210,80 @@ export const authService = {
         }
       }
 
-      const matchedProfile = DEMO_USERS.find(u => u.role === cred.role) || {
+      const canonicalRole = toCanonicalRole(cred.role);
+      const matchedProfile = DEMO_USERS.find(u => toCanonicalRole(u.role) === canonicalRole) || {
         id: `USR-${cred.username.toUpperCase()}`,
         name: cred.displayName,
         email: cred.email,
-        role: cred.role,
+        role: canonicalRole,
         organization: cred.organization,
-        badge: cred.badge
+        badge: cred.badge,
+        status: 'ACTIVE' as const,
+        createdAt: '2026-01-15T08:00:00Z'
       };
+
+      const dummyToken = 'rg_' + Math.random().toString(36).substring(2) + '_' + Date.now();
+      setStoredSessionToken(dummyToken);
+
+      const resolvedUser: UserProfile = {
+        ...matchedProfile,
+        role: canonicalRole,
+        status: 'ACTIVE',
+        createdAt: '2026-01-15T08:00:00Z'
+      };
+      authService.setCurrentUserCache(resolvedUser);
 
       return {
         success: true,
-        user: matchedProfile
+        token: dummyToken,
+        user: resolvedUser
       };
     }
 
-    // 2. Email matching fallback (e.g. admin@recguard.gov, etc.)
+    // Email match fallback
     const emailMatch = DEMO_USERS.find(u => u.email.toLowerCase() === raw);
     if (emailMatch) {
-      if (password && password.trim() !== '') {
-        const cleanPass = password.trim();
-        const validPasswords = ['password123', 'admin@2025!', 'audit@2025!', 'issuer@2025!', 'buyer@2025!'];
-        if (!validPasswords.includes(cleanPass.toLowerCase()) && cleanPass !== 'password123') {
-          return {
-            success: false,
-            error: 'Invalid password. Expected "password123".'
-          };
-        }
-      }
+      const canonical = toCanonicalRole(emailMatch.role);
+      const dummyToken = 'rg_' + Math.random().toString(36).substring(2) + '_' + Date.now();
+      setStoredSessionToken(dummyToken);
+      const resolvedUser: UserProfile = {
+        ...emailMatch,
+        role: canonical,
+        status: 'ACTIVE',
+        createdAt: '2026-01-15T08:00:00Z'
+      };
+      authService.setCurrentUserCache(resolvedUser);
       return {
         success: true,
-        user: emailMatch
+        token: dummyToken,
+        user: resolvedUser
       };
     }
 
     return {
       success: false,
-      error: 'Invalid credentials. Accepted usernames/roles: "admin", "auditor", "issuer", "buyer".'
+      error: 'Invalid credentials. Accepted demo usernames: "admin", "auditor", "issuer", "buyer". Password: "password123".'
     };
   },
 
-  /**
-   * Quick authenticate directly by role
-   */
   authenticateRole: (role: DemoRoleKey | UserRole): AuthResult => {
     let key: DemoRoleKey = 'admin';
-    if (role === 'ADMIN' || role === 'REGULATOR' || role === 'admin') key = 'admin';
-    else if (role === 'AUDITOR' || role === 'auditor') key = 'auditor';
-    else if (role === 'CERTIFICATE_ISSUER' || role === 'issuer') key = 'issuer';
-    else if (role === 'CORPORATE_BUYER' || role === 'buyer') key = 'buyer';
+    const clean = String(role).toLowerCase();
+    if (clean.includes('admin') || clean.includes('regulator')) key = 'admin';
+    else if (clean.includes('audit')) key = 'auditor';
+    else if (clean.includes('issuer')) key = 'issuer';
+    else if (clean.includes('buyer')) key = 'buyer';
 
-    const cred = DEMO_CREDENTIALS[key];
-    const user = DEMO_USERS.find(u => u.role === cred.role) || {
-      id: `USR-${cred.username.toUpperCase()}`,
-      name: cred.displayName,
-      email: cred.email,
-      role: cred.role,
-      organization: cred.organization,
-      badge: cred.badge
-    };
+    return authService.authenticate(key, 'password123');
+  },
 
-    return {
-      success: true,
-      user
-    };
+  logout: async () => {
+    try {
+      await apiFetch('/api/auth/logout', { method: 'POST' });
+    } catch {
+      // Ignore
+    }
+    clearStoredSessionToken();
+    authService.setCurrentUserCache(null);
   }
 };
