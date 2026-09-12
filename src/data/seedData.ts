@@ -10,30 +10,6 @@ export const DEMO_USERS: UserProfile[] = [
     role: 'ADMIN',
     organization: 'Federal Clean Energy Regulatory Commission (FCERC)',
     badge: 'Chief Regulatory Officer'
-  },
-  {
-    id: 'USR-AUD-03',
-    name: 'Sarah Chen, CISA',
-    email: 'auditor@recguard.org',
-    role: 'AUDITOR',
-    organization: 'Veritas Energy Auditing & Forensics',
-    badge: 'Lead Environmental Auditor'
-  },
-  {
-    id: 'USR-ISS-02',
-    name: 'Marcus Vance',
-    email: 'issuer@cleanenergy.com',
-    role: 'CERTIFICATE_ISSUER',
-    organization: 'GreenAttribute Registry Services',
-    badge: 'Accredited Issuer Admin'
-  },
-  {
-    id: 'USR-BUY-04',
-    name: 'David K. Miller',
-    email: 'buyer@greentech.corp',
-    role: 'CORPORATE_BUYER',
-    organization: 'AeroTech Global Technologies (Scope 2 Procurement)',
-    badge: 'Sustainability Director'
   }
 ];
 

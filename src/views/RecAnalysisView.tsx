@@ -109,27 +109,27 @@ export const RecAnalysisView: React.FC = () => {
   return (
     <div className="p-6 md:p-8 space-y-6 max-w-7xl mx-auto">
       {/* View Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">REC Analysis & Registry</h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <h1 className="text-2xl font-bold text-slate-100 tracking-tight">REC Analysis & Registry</h1>
+          <p className="text-sm text-slate-400 mt-1">
             Search, filter, and inspect certificate telemetry across all generation claims and cryptographic fingerprints.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-xs font-mono font-semibold text-slate-600 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">
+          <span className="text-xs font-mono font-semibold text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20">
             {filteredRecs.length.toLocaleString()} matching records
           </span>
         </div>
       </div>
 
       {/* Filter Control Bar */}
-      <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-xs space-y-4">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl p-4 shadow-xs space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {/* Search Input */}
           <div className="relative">
-            <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Search</label>
+            <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Search</label>
             <div className="relative">
               <input
                 type="text"
@@ -139,13 +139,13 @@ export const RecAnalysisView: React.FC = () => {
                   setCurrentPage(1);
                 }}
                 placeholder="REC ID, Gen ID, Plant, Owner..."
-                className="w-full bg-slate-50 border border-slate-200 rounded-lg pl-8 pr-3 py-2 text-xs text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-blue-500 focus:bg-white"
+                className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-2 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-emerald-500/50 focus:bg-slate-900"
               />
-              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-3" />
+              <Search className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-3" />
               {searchQuery && (
                 <button 
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600"
+                  className="absolute right-2.5 top-2.5 text-slate-500 hover:text-slate-300"
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
@@ -155,14 +155,14 @@ export const RecAnalysisView: React.FC = () => {
 
           {/* Status Filter */}
           <div>
-            <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Status</label>
+            <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Status</label>
             <select
               value={statusFilter}
               onChange={(e) => {
                 setStatusFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500 focus:bg-white"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500/50 focus:bg-slate-900"
             >
               <option value="ALL">All Statuses</option>
               <option value="ACTIVE">ACTIVE</option>
@@ -175,14 +175,14 @@ export const RecAnalysisView: React.FC = () => {
 
           {/* Risk Level Filter */}
           <div>
-            <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Risk Level</label>
+            <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Risk Level</label>
             <select
               value={riskLevelFilter}
               onChange={(e) => {
                 setRiskLevelFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500 focus:bg-white"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500/50 focus:bg-slate-900"
             >
               <option value="ALL">All Risk Levels</option>
               <option value="LOW">LOW (0–30)</option>
@@ -194,14 +194,14 @@ export const RecAnalysisView: React.FC = () => {
 
           {/* Energy Source Filter */}
           <div>
-            <label className="block text-[11px] font-bold text-slate-600 uppercase mb-1">Energy Source</label>
+            <label className="block text-[11px] font-bold text-slate-400 uppercase mb-1">Energy Source</label>
             <select
               value={energySourceFilter}
               onChange={(e) => {
                 setEnergySourceFilter(e.target.value);
                 setCurrentPage(1);
               }}
-              className="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500 focus:bg-white"
+              className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500/50 focus:bg-slate-900"
             >
               <option value="ALL">All Energy Sources</option>
               <option value="Solar">Solar Photovoltaic</option>
@@ -214,15 +214,15 @@ export const RecAnalysisView: React.FC = () => {
         </div>
 
         {/* Quick Filter Shortcuts */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-100 text-xs">
-          <span className="text-slate-500 font-medium">Quick Filters:</span>
+        <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-slate-800/80 text-xs">
+          <span className="text-slate-400 font-medium">Quick Filters:</span>
           <button
             onClick={() => {
               setStatusFilter('FLAGGED');
               setRiskLevelFilter('ALL');
               setCurrentPage(1);
             }}
-            className="px-2.5 py-1 rounded bg-rose-50 text-rose-700 hover:bg-rose-100 border border-rose-200 font-semibold"
+            className="px-2.5 py-1 rounded bg-rose-500/10 text-rose-400 hover:bg-rose-500/20 border border-rose-500/30 font-semibold"
           >
             Flagged Only
           </button>
@@ -232,7 +232,7 @@ export const RecAnalysisView: React.FC = () => {
               setStatusFilter('ALL');
               setCurrentPage(1);
             }}
-            className="px-2.5 py-1 rounded bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 font-semibold"
+            className="px-2.5 py-1 rounded bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 border border-amber-500/30 font-semibold"
           >
             Critical Risk (Score &gt; 80)
           </button>
@@ -242,7 +242,7 @@ export const RecAnalysisView: React.FC = () => {
               setRiskLevelFilter('ALL');
               setCurrentPage(1);
             }}
-            className="px-2.5 py-1 rounded bg-purple-50 text-purple-700 hover:bg-purple-100 border border-purple-200 font-semibold"
+            className="px-2.5 py-1 rounded bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 border border-purple-500/30 font-semibold"
           >
             Retired Claims
           </button>
@@ -252,7 +252,7 @@ export const RecAnalysisView: React.FC = () => {
               setStatusFilter('ACTIVE');
               setCurrentPage(1);
             }}
-            className="px-2.5 py-1 rounded bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 font-semibold"
+            className="px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20 border border-emerald-500/30 font-semibold"
           >
             Clean / Verified RECs
           </button>
@@ -265,7 +265,7 @@ export const RecAnalysisView: React.FC = () => {
                 setEnergySourceFilter('ALL');
                 setCurrentPage(1);
               }}
-              className="ml-auto text-xs text-slate-500 hover:text-slate-800 underline"
+              className="ml-auto text-xs text-slate-400 hover:text-slate-200 underline"
             >
               Reset Filters
             </button>
@@ -274,48 +274,48 @@ export const RecAnalysisView: React.FC = () => {
       </div>
 
       {/* Main Table */}
-      <div className="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-xs overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+            <thead className="bg-slate-950 text-slate-400 font-semibold border-b border-slate-800">
               <tr>
                 <th 
                   onClick={() => handleSort('id')} 
-                  className="py-3 px-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                  className="py-3 px-4 cursor-pointer hover:bg-slate-800/50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>REC ID</span>
-                    <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    <ArrowUpDown className="w-3 h-3 text-slate-500" />
                   </div>
                 </th>
                 <th 
                   onClick={() => handleSort('plantName')} 
-                  className="py-3 px-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                  className="py-3 px-4 cursor-pointer hover:bg-slate-800/50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Plant</span>
-                    <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    <ArrowUpDown className="w-3 h-3 text-slate-500" />
                   </div>
                 </th>
                 <th className="py-3 px-4">Generation (ID)</th>
                 <th 
                   onClick={() => handleSort('claimedGenerationMWh')} 
-                  className="py-3 px-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                  className="py-3 px-4 cursor-pointer hover:bg-slate-800/50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Energy (Claim vs Verified)</span>
-                    <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    <ArrowUpDown className="w-3 h-3 text-slate-500" />
                   </div>
                 </th>
                 <th className="py-3 px-4">Owner</th>
                 <th className="py-3 px-4">Status</th>
                 <th 
                   onClick={() => handleSort('riskScore')} 
-                  className="py-3 px-4 cursor-pointer hover:bg-slate-100 transition-colors"
+                  className="py-3 px-4 cursor-pointer hover:bg-slate-800/50 transition-colors"
                 >
                   <div className="flex items-center gap-1">
                     <span>Risk Score</span>
-                    <ArrowUpDown className="w-3 h-3 text-slate-400" />
+                    <ArrowUpDown className="w-3 h-3 text-slate-500" />
                   </div>
                 </th>
                 <th className="py-3 px-4">Risk Level</th>
@@ -323,7 +323,7 @@ export const RecAnalysisView: React.FC = () => {
                 <th className="py-3 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody className="divide-y divide-slate-800 text-slate-300">
               {paginatedRecs.length === 0 ? (
                 <tr>
                   <td colSpan={10} className="py-12 text-center text-slate-500">
@@ -332,57 +332,57 @@ export const RecAnalysisView: React.FC = () => {
                 </tr>
               ) : (
                 paginatedRecs.map((rec, idx) => (
-                  <tr key={`analysis-rec-${rec.id}-${idx}`} className="hover:bg-slate-50 transition-colors">
+                  <tr key={`analysis-rec-${rec.id}-${idx}`} className="hover:bg-slate-800/40 transition-colors">
                     {/* REC ID */}
-                    <td className="py-3 px-4 font-mono font-bold text-slate-900">
+                    <td className="py-3 px-4 font-mono font-bold text-slate-100">
                       {rec.id}
                     </td>
 
                     {/* Plant */}
                     <td className="py-3 px-4">
-                      <div className="font-semibold text-slate-900">{rec.plantName}</div>
-                      <div className="text-[11px] text-slate-500">{rec.energySource} • {rec.location}</div>
+                      <div className="font-semibold text-slate-100">{rec.plantName}</div>
+                      <div className="text-[11px] text-slate-400">{rec.energySource} • {rec.location}</div>
                     </td>
 
                     {/* Generation ID */}
-                    <td className="py-3 px-4 font-mono text-slate-600">
-                      <div>{rec.generationId}</div>
-                      <div className="text-[10px] text-slate-400">{rec.generationDate}</div>
+                    <td className="py-3 px-4 font-mono text-slate-400">
+                      <div className="text-slate-300">{rec.generationId}</div>
+                      <div className="text-[10px] text-slate-500">{rec.generationDate}</div>
                     </td>
 
                     {/* Energy (Claimed vs Verified MWh) */}
                     <td className="py-3 px-4">
-                      <div className="font-mono font-semibold text-slate-900">
+                      <div className="font-mono font-semibold text-slate-100">
                         {rec.claimedGenerationMWh.toLocaleString()} MWh
                       </div>
-                      <div className="text-[11px] font-mono text-slate-500">
+                      <div className="text-[11px] font-mono text-slate-400">
                         Verified: {rec.verifiedGenerationMWh.toLocaleString()} MWh
                       </div>
                     </td>
 
                     {/* Owner */}
                     <td className="py-3 px-4">
-                      <div className="font-medium text-slate-900 truncate max-w-[130px]" title={rec.currentOwnerName}>
+                      <div className="font-medium text-slate-200 truncate max-w-[130px]" title={rec.currentOwnerName}>
                         {rec.currentOwnerName}
                       </div>
-                      <div className="text-[10px] text-slate-400">Issuer: {rec.issuerName}</div>
+                      <div className="text-[10px] text-slate-500">Issuer: {rec.issuerName}</div>
                     </td>
 
                     {/* Status */}
                     <td className="py-3 px-4">
                       <span className={`text-[11px] font-semibold px-2.5 py-0.5 rounded-full ${
-                        rec.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                        rec.status === 'FLAGGED' ? 'bg-rose-50 text-rose-700 border border-rose-200 font-bold' :
-                        rec.status === 'SUSPENDED' ? 'bg-amber-50 text-amber-700 border border-amber-200 font-bold' :
-                        rec.status === 'RETIRED' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
-                        'bg-slate-100 text-slate-700'
+                        rec.status === 'ACTIVE' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' :
+                        rec.status === 'FLAGGED' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold' :
+                        rec.status === 'SUSPENDED' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/30 font-bold' :
+                        rec.status === 'RETIRED' ? 'bg-purple-500/10 text-purple-400 border border-purple-500/30' :
+                        'bg-slate-800 text-slate-300 border border-slate-700'
                       }`}>
                         {rec.status}
                       </span>
                     </td>
 
                     {/* Risk Score */}
-                    <td className="py-3 px-4 font-mono font-bold text-slate-900">
+                    <td className="py-3 px-4 font-mono font-bold text-slate-100">
                       {rec.riskScore} / 100
                     </td>
 
@@ -393,17 +393,17 @@ export const RecAnalysisView: React.FC = () => {
 
                     {/* Fingerprint SHA-256 */}
                     <td className="py-3 px-4">
-                      <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate-500">
+                      <div className="flex items-center gap-1.5 font-mono text-[11px] text-slate-400">
                         <span title={rec.fingerprintSha256}>
                           {rec.fingerprintSha256.slice(0, 8)}...{rec.fingerprintSha256.slice(-6)}
                         </span>
                         <button
                           onClick={() => copyToClipboard(rec.fingerprintSha256)}
-                          className="p-1 hover:text-slate-800 text-slate-400 transition-colors"
+                          className="p-1 hover:text-slate-200 text-slate-500 transition-colors"
                           title="Copy SHA-256 Hash"
                         >
                           {copiedHash === rec.fingerprintSha256 ? (
-                            <Check className="w-3 h-3 text-emerald-600" />
+                            <Check className="w-3 h-3 text-emerald-400" />
                           ) : (
                             <Copy className="w-3 h-3" />
                           )}
@@ -415,14 +415,14 @@ export const RecAnalysisView: React.FC = () => {
                     <td className="py-3 px-4 text-right space-x-1 whitespace-nowrap">
                       <button
                         onClick={() => setViewingRec(rec)}
-                        className="px-2 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded text-xs transition-colors"
+                        className="px-2 py-1 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded text-xs border border-slate-700 transition-colors"
                         title="View Certificate Details"
                       >
                         View
                       </button>
                       <button
                         onClick={() => inspectRec(rec.id)}
-                        className="px-2 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 font-semibold rounded text-xs border border-amber-200 transition-colors"
+                        className="px-2 py-1 bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 font-semibold rounded text-xs border border-amber-500/30 transition-colors"
                         title="Analyze Forensic Risk & Statutory Rules"
                       >
                         Inspect Risk
@@ -432,7 +432,7 @@ export const RecAnalysisView: React.FC = () => {
                           inspectRec(rec.id);
                           setActiveTab('passport');
                         }}
-                        className="px-2 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 font-semibold rounded text-xs border border-blue-200 transition-colors"
+                        className="px-2 py-1 bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 font-semibold rounded text-xs border border-sky-500/30 transition-colors"
                         title="Open Digital Lifecycle Passport"
                       >
                         Passport
@@ -446,10 +446,10 @@ export const RecAnalysisView: React.FC = () => {
         </div>
 
         {/* Pagination Bar */}
-        <div className="p-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-600">
+        <div className="p-4 bg-slate-950 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
           <div className="flex items-center gap-2">
             <span>Showing {paginatedRecs.length > 0 ? (currentPage - 1) * pageSize + 1 : 0} to {Math.min(currentPage * pageSize, filteredRecs.length)} of {filteredRecs.length} entries</span>
-            <span className="text-slate-300">|</span>
+            <span className="text-slate-800">|</span>
             <div className="flex items-center gap-1.5">
               <span>Rows per page:</span>
               <select
@@ -458,7 +458,7 @@ export const RecAnalysisView: React.FC = () => {
                   setPageSize(Number(e.target.value));
                   setCurrentPage(1);
                 }}
-                className="bg-white border border-slate-200 rounded px-2 py-1 font-mono text-xs text-slate-900"
+                className="bg-slate-900 border border-slate-800 rounded px-2 py-1 font-mono text-xs text-slate-100"
               >
                 <option value={10}>10</option>
                 <option value={15}>15</option>
@@ -472,17 +472,17 @@ export const RecAnalysisView: React.FC = () => {
             <button
               onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
               disabled={currentPage === 1}
-              className="p-1.5 rounded border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="p-1.5 rounded border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="px-3 py-1 font-mono text-xs font-semibold text-slate-800">
+            <span className="px-3 py-1 font-mono text-xs font-semibold text-slate-200">
               Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
               disabled={currentPage === totalPages}
-              className="p-1.5 rounded border border-slate-200 bg-white hover:bg-slate-100 disabled:opacity-40 disabled:cursor-not-allowed"
+              className="p-1.5 rounded border border-slate-800 bg-slate-900 hover:bg-slate-800 text-slate-300 disabled:opacity-40 disabled:cursor-not-allowed"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -492,70 +492,70 @@ export const RecAnalysisView: React.FC = () => {
 
       {/* Certificate Quick View Modal */}
       {viewingRec && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
-          <div className="bg-white border border-slate-200 rounded-xl shadow-xl max-w-2xl w-full p-4 sm:p-6 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
-            <div className="flex items-start justify-between border-b border-slate-200 pb-3">
+        <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-xs flex items-center justify-center p-3 sm:p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-2xl max-w-2xl w-full p-4 sm:p-6 space-y-4 sm:space-y-5 max-h-[90vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150 text-slate-100">
+            <div className="flex items-start justify-between border-b border-slate-800 pb-3">
               <div>
                 <div className="flex items-center gap-2">
-                  <h2 className="text-lg font-bold text-slate-900 font-mono">{viewingRec.id}</h2>
+                  <h2 className="text-lg font-bold text-slate-100 font-mono">{viewingRec.id}</h2>
                   <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
-                    viewingRec.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                    viewingRec.status === 'FLAGGED' ? 'bg-rose-50 text-rose-700 border border-rose-200 font-bold' :
-                    'bg-slate-100 text-slate-700'
+                    viewingRec.status === 'ACTIVE' ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30' :
+                    viewingRec.status === 'FLAGGED' ? 'bg-rose-500/10 text-rose-400 border border-rose-500/30 font-bold' :
+                    'bg-slate-800 text-slate-300 border border-slate-700'
                   }`}>
                     {viewingRec.status}
                   </span>
                 </div>
-                <p className="text-xs text-slate-500">Statutory Certificate Manifest & SCADA Telemetry</p>
+                <p className="text-xs text-slate-400">Statutory Certificate Manifest & SCADA Telemetry</p>
               </div>
               <button
                 onClick={() => setViewingRec(null)}
-                className="text-slate-400 hover:text-slate-600 p-1"
+                className="text-slate-400 hover:text-slate-200 p-1"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-xs">
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
                 <div className="text-slate-400 font-bold uppercase text-[10px]">Generation ID</div>
-                <div className="font-mono font-semibold text-slate-900 mt-1">{viewingRec.generationId}</div>
+                <div className="font-mono font-semibold text-slate-100 mt-1">{viewingRec.generationId}</div>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
                 <div className="text-slate-400 font-bold uppercase text-[10px]">Claimed Volume</div>
-                <div className="font-mono font-semibold text-slate-900 mt-1">{viewingRec.claimedGenerationMWh.toLocaleString()} MWh</div>
+                <div className="font-mono font-semibold text-slate-100 mt-1">{viewingRec.claimedGenerationMWh.toLocaleString()} MWh</div>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
                 <div className="text-slate-400 font-bold uppercase text-[10px]">Verified SCADA Volume</div>
-                <div className="font-mono font-semibold text-slate-900 mt-1">{viewingRec.verifiedGenerationMWh.toLocaleString()} MWh</div>
+                <div className="font-mono font-semibold text-slate-100 mt-1">{viewingRec.verifiedGenerationMWh.toLocaleString()} MWh</div>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
                 <div className="text-slate-400 font-bold uppercase text-[10px]">Plant Name</div>
-                <div className="font-semibold text-slate-900 mt-1">{viewingRec.plantName}</div>
+                <div className="font-semibold text-slate-100 mt-1">{viewingRec.plantName}</div>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
                 <div className="text-slate-400 font-bold uppercase text-[10px]">Capacity (MW)</div>
-                <div className="font-mono font-semibold text-slate-900 mt-1">{viewingRec.plantCapacityMW} MW</div>
+                <div className="font-mono font-semibold text-slate-100 mt-1">{viewingRec.plantCapacityMW} MW</div>
               </div>
-              <div className="p-3 bg-slate-50 rounded-lg border border-slate-100">
+              <div className="p-3 bg-slate-950 rounded-lg border border-slate-800">
                 <div className="text-slate-400 font-bold uppercase text-[10px]">Energy Source</div>
-                <div className="font-semibold text-slate-900 mt-1">{viewingRec.energySource}</div>
+                <div className="font-semibold text-slate-100 mt-1">{viewingRec.energySource}</div>
               </div>
             </div>
 
             {/* Cryptographic Proof */}
-            <div className="p-3 bg-slate-50 rounded-lg border border-slate-100 text-xs space-y-1.5">
+            <div className="p-3 bg-slate-950 rounded-lg border border-slate-800 text-xs space-y-1.5">
               <div className="text-slate-400 font-bold uppercase text-[10px]">SHA-256 Digital Fingerprint</div>
-              <div className="font-mono text-slate-800 break-all bg-white p-2 rounded border border-slate-200">
+              <div className="font-mono text-emerald-400 break-all bg-slate-900 p-2 rounded border border-slate-800">
                 {viewingRec.fingerprintSha256}
               </div>
             </div>
 
             {/* Modal Actions */}
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200">
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-800">
               <button
                 onClick={() => setViewingRec(null)}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg"
+                className="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold rounded-lg border border-slate-700"
               >
                 Close
               </button>
@@ -565,7 +565,7 @@ export const RecAnalysisView: React.FC = () => {
                   setViewingRec(null);
                   inspectRec(id);
                 }}
-                className="px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg shadow-xs"
+                className="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold rounded-lg shadow-xs"
               >
                 Inspect Forensic Risk
               </button>
@@ -576,7 +576,7 @@ export const RecAnalysisView: React.FC = () => {
                   inspectRec(id);
                   setActiveTab('passport');
                 }}
-                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-xs"
+                className="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-lg shadow-xs"
               >
                 Open Digital Passport
               </button>

@@ -73,6 +73,7 @@ interface AppContextType {
   isAuthenticated: boolean;
   setIsAuthenticated: (val: boolean) => void;
   login: (identifier: string, password?: string) => boolean;
+  registerUser: (params: { name: string; email: string; password?: string; role: UserRole; organization: string; badge?: string }) => boolean;
   logout: () => void;
   demoCredentials: Record<DemoRoleKey, DemoCredential>;
 
@@ -283,6 +284,44 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return false;
   }, [addToast, addAuditLog]);
 
+  const registerUser = useCallback((params: {
+    name: string;
+    email: string;
+    password?: string;
+    role: UserRole;
+    organization: string;
+    badge?: string;
+  }): boolean => {
+    const result = authService.registerUser(params);
+    if (result.success && result.user) {
+      setCurrentUser(result.user);
+      setIsAuthenticated(true);
+      const canonical = toCanonicalRole(result.user.role).toLowerCase();
+      const targetPath = `/${canonical}/dashboard`;
+      setCurrentPath(targetPath);
+      if (typeof window !== 'undefined') {
+        window.history.pushState({}, '', targetPath);
+      }
+      setActiveTab('dashboard');
+      addToast({
+        type: 'success',
+        title: 'Account Registered Successfully',
+        message: `Welcome, ${result.user.name}! Registered as ${canonical.toUpperCase()}.`
+      });
+      addAuditLog({
+        userId: result.user.id,
+        userName: result.user.name,
+        userRole: result.user.role,
+        action: 'USER_REGISTER',
+        ipAddress: '192.168.1.10',
+        result: 'SUCCESS',
+        details: `Registered account as ${result.user.role} for ${result.user.organization}. Redirected to ${targetPath}.`
+      });
+      return true;
+    }
+    return false;
+  }, [addToast, addAuditLog]);
+
   const logout = useCallback(() => {
     authService.logout();
     addAuditLog({
@@ -468,7 +507,17 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const inspectRec = useCallback((recId: string) => {
     setSelectedRecId(recId);
     setActiveTab('risk-intelligence');
-  }, []);
+    const canonical = toCanonicalRole(currentUser?.role || 'AUDITOR').toLowerCase();
+    if (canonical === 'auditor') {
+      navigateToPath('/auditor/risk-alerts');
+    } else if (canonical === 'issuer') {
+      navigateToPath('/issuer/risk-alerts');
+    } else if (canonical === 'admin') {
+      navigateToPath('/admin/fraud-alerts');
+    } else if (canonical === 'buyer') {
+      navigateToPath('/buyer/verification');
+    }
+  }, [currentUser, navigateToPath]);
 
   // Update alert status
   const updateAlertStatus = useCallback((alertId: string, status: AlertStatus, noteText?: string) => {
@@ -749,6 +798,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isAuthenticated,
         setIsAuthenticated,
         login,
+        registerUser,
         logout,
         demoCredentials: DEMO_CREDENTIALS,
         isAddRecOpen,

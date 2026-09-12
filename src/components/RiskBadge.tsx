@@ -22,23 +22,23 @@ export const RiskBadge: React.FC<RiskBadgeProps> = ({
 
   const styleMap = {
     LOW: {
-      bg: 'bg-emerald-50 border-emerald-200 text-emerald-800',
-      dot: 'bg-emerald-600',
+      bg: 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400',
+      dot: 'bg-emerald-400',
       label: 'LOW'
     },
     MEDIUM: {
-      bg: 'bg-amber-50 border-amber-200 text-amber-800',
-      dot: 'bg-amber-500',
+      bg: 'bg-amber-500/10 border-amber-500/30 text-amber-400',
+      dot: 'bg-amber-400',
       label: 'MEDIUM'
     },
     HIGH: {
-      bg: 'bg-orange-50 border-orange-200 text-orange-800',
-      dot: 'bg-orange-600',
+      bg: 'bg-orange-500/10 border-orange-500/30 text-orange-400',
+      dot: 'bg-orange-400',
       label: 'HIGH'
     },
     CRITICAL: {
-      bg: 'bg-rose-50 border-rose-200 text-rose-800',
-      dot: 'bg-rose-600',
+      bg: 'bg-rose-500/10 border-rose-500/30 text-rose-400',
+      dot: 'bg-rose-400',
       label: 'CRITICAL'
     }
   };
@@ -93,20 +93,20 @@ export const RiskMeter: React.FC<RiskMeterProps> = ({ score, size = 'md', showLa
   return (
     <div className="w-full">
       {showLabel && (
-        <div className="flex items-center justify-between text-xs mb-1.5">
-          <span className="text-slate-600 font-medium">Risk Score</span>
-          <span className="font-mono font-bold text-slate-900">{clamped} / 100 ({getBandText(clamped)})</span>
+        <div className="flex items-center justify-between text-xs mb-1.5 font-mono">
+          <span className="text-slate-400 font-medium">Risk Score</span>
+          <span className="font-mono font-bold text-slate-100">{clamped} / 100 ({getBandText(clamped)})</span>
         </div>
       )}
       
       {/* Risk bar track */}
-      <div className="relative w-full h-2.5 bg-slate-100 rounded-full overflow-hidden p-0.5 border border-slate-200">
+      <div className="relative w-full h-2.5 bg-slate-950 rounded-full overflow-hidden p-0.5 border border-slate-800">
         {/* Background graduation markers */}
         <div className="absolute inset-0 flex justify-between px-1 pointer-events-none opacity-20">
-          <div className="w-px h-full bg-slate-400" />
-          <div className="w-px h-full bg-slate-400" />
-          <div className="w-px h-full bg-slate-400" />
-          <div className="w-px h-full bg-slate-400" />
+          <div className="w-px h-full bg-slate-600" />
+          <div className="w-px h-full bg-slate-600" />
+          <div className="w-px h-full bg-slate-600" />
+          <div className="w-px h-full bg-slate-600" />
         </div>
         
         <div 

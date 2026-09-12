@@ -21,13 +21,13 @@ import {
   ShieldCheck,
   AlertCircle
 } from 'lucide-react';
-import { DEMO_USERS } from '../data/seedData';
 import { UserRole, UserProfile } from '../types';
+import { authService } from '../services/authService';
 
 export const UserManagementView: React.FC = () => {
   const { currentUser, addToast, addAuditLog } = useApp();
 
-  const [usersList, setUsersList] = useState<UserProfile[]>(DEMO_USERS);
+  const [usersList, setUsersList] = useState<UserProfile[]>(() => authService.getRegisteredUsers());
   const [editingUserId, setEditingUserId] = useState<string | null>(null);
   const [selectedRole, setSelectedRole] = useState<UserRole>('ADMIN');
 
@@ -121,24 +121,24 @@ export const UserManagementView: React.FC = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-slate-900 border border-slate-800 p-6 rounded-2xl">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="text-[11px] font-mono uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 border border-blue-500/30">
+          <div className="flex items-center gap-2 mb-1 font-mono">
+            <span className="text-[11px] font-mono uppercase tracking-wider font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30">
               GOVERNANCE & DIRECTORY ACCESS
             </span>
             <span className="text-xs text-slate-400 font-medium">• 4 Active Principals</span>
           </div>
-          <h1 className="text-2xl font-bold text-white tracking-tight">
+          <h1 className="text-2xl font-bold text-white tracking-tight font-mono">
             User Administration & RBAC Management
           </h1>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-slate-400 mt-0.5">
             Enforces strict segregation of duties between System Administrators, Environmental Auditors, Certificate Issuers, and Corporate Buyers.
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 font-mono">
           <span className="text-xs text-slate-400">Active Admin:</span>
-          <span className="text-xs font-bold text-white bg-slate-800 px-3 py-1.5 rounded-xl border border-slate-700 flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
+          <span className="text-xs font-bold text-white bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 flex items-center gap-1.5">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             {currentUser.name} ({currentUser.role})
           </span>
         </div>

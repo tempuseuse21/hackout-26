@@ -159,64 +159,64 @@ export const AddRecModal: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/60 backdrop-blur-xs animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in duration-200">
       <div 
-        className="bg-white rounded-2xl shadow-2xl border border-slate-200 w-full max-w-3xl overflow-hidden flex flex-col max-h-[92vh]"
+        className="bg-slate-900 rounded-2xl shadow-2xl border border-slate-800 w-full max-w-3xl overflow-hidden flex flex-col max-h-[92vh] text-slate-100"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
-        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+        <div className="px-4 sm:px-6 py-3 sm:py-4 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between">
           <div className="flex items-center gap-2.5 min-w-0">
-            <div className="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center shadow-sm shrink-0">
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white flex items-center justify-center shadow-md shrink-0">
               <PlusCircle className="w-5 h-5" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-sm sm:text-base font-bold text-slate-900 flex flex-wrap items-center gap-2">
+              <h2 className="text-sm sm:text-base font-bold text-white flex flex-wrap items-center gap-2">
                 <span>Add New Renewable Energy Certificate</span>
-                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">
+                <span className="text-[10px] uppercase font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">
                   Statutory Intake
                 </span>
               </h2>
-              <p className="text-xs text-slate-500 truncate">
-                Authorized Intake & Automated Risk Pipeline • Role: <strong className="text-slate-800">{currentUser.role}</strong>
+              <p className="text-xs text-slate-400 truncate">
+                Authorized Intake & Automated Risk Pipeline • Role: <strong className="text-emerald-400">{currentUser.role}</strong>
               </p>
             </div>
           </div>
           <button
             onClick={() => setIsAddRecOpen(false)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors shrink-0"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Demo Quick-Fill Scenarios */}
-        <div className="px-4 sm:px-6 py-2.5 bg-blue-50/70 border-b border-blue-100 flex flex-wrap items-center justify-between gap-2">
-          <div className="text-xs font-semibold text-blue-900 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+        <div className="px-4 sm:px-6 py-2.5 bg-slate-950/60 border-b border-slate-800 flex flex-wrap items-center justify-between gap-2">
+          <div className="text-xs font-semibold text-emerald-400 flex items-center gap-1.5 font-mono">
+            <Sparkles className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
             <span>Judge Demo Scenarios:</span>
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <button
               type="button"
               onClick={loadSuspiciousScenario}
-              className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-rose-100 hover:bg-rose-200 text-rose-800 border border-rose-200 transition-colors flex items-center gap-1"
+              className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 transition-colors flex items-center gap-1 cursor-pointer"
             >
-              <AlertTriangle className="w-3 h-3 text-rose-600" />
+              <AlertTriangle className="w-3 h-3 text-rose-400" />
               Load Suspicious Demo (11,400 vs 18,500 MWh)
             </button>
             <button
               type="button"
               onClick={loadCleanScenario}
-              className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-emerald-100 hover:bg-emerald-200 text-emerald-800 border border-emerald-200 transition-colors flex items-center gap-1"
+              className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 transition-colors flex items-center gap-1 cursor-pointer"
             >
-              <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+              <CheckCircle2 className="w-3 h-3 text-emerald-400" />
               Load Clean Normal
             </button>
             <button
               type="button"
               onClick={loadDuplicateGenScenario}
-              className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-amber-100 hover:bg-amber-200 text-amber-800 border border-amber-200 transition-colors"
+              className="text-[11px] font-semibold px-2.5 py-1 rounded-md bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 transition-colors cursor-pointer"
             >
               Duplicate Gen ID
             </button>
@@ -225,9 +225,9 @@ export const AddRecModal: React.FC = () => {
 
         {/* Error Banners */}
         {formErrors.length > 0 && (
-          <div className="mx-6 mt-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-800 text-xs space-y-1">
-            <div className="font-bold flex items-center gap-1.5">
-              <AlertTriangle className="w-4 h-4 text-rose-600" />
+          <div className="mx-6 mt-4 p-3 rounded-lg bg-rose-950/60 border border-rose-800/60 text-rose-300 text-xs space-y-1">
+            <div className="font-bold flex items-center gap-1.5 text-rose-400">
+              <AlertTriangle className="w-4 h-4 text-rose-400" />
               Please correct the following:
             </div>
             <ul className="list-disc list-inside space-y-0.5 text-[11px]">
@@ -242,43 +242,43 @@ export const AddRecModal: React.FC = () => {
         <div className="p-6 overflow-y-auto space-y-5 custom-scrollbar flex-1">
           {/* Section 1: Identification */}
           <div>
-            <div className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <Zap className="w-4 h-4 text-blue-600" />
+            <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2 font-mono">
+              <Zap className="w-4 h-4 text-emerald-400" />
               Certificate Identifiers
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  REC ID <span className="text-rose-500">*</span>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
+                  REC ID <span className="text-rose-400">*</span>
                 </label>
                 <input 
                   type="text" 
                   value={recId}
                   onChange={(e) => setRecId(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-100 focus:outline-none focus:border-emerald-500"
                   placeholder="REC-10492"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Generation Meter ID <span className="text-rose-500">*</span>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
+                  Generation Meter ID <span className="text-rose-400">*</span>
                 </label>
                 <input 
                   type="text" 
                   value={generationId}
                   onChange={(e) => setGenerationId(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-100 focus:outline-none focus:border-emerald-500"
                   placeholder="GEN-88421"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Energy Source
                 </label>
                 <select
                   value={energySource}
                   onChange={(e) => setEnergySource(e.target.value as EnergySource)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-semibold text-slate-100 focus:outline-none focus:border-emerald-500"
                 >
                   <option value="SOLAR">Solar PV</option>
                   <option value="WIND">Wind Turbine</option>
@@ -292,57 +292,57 @@ export const AddRecModal: React.FC = () => {
 
           {/* Section 2: Generation Facility & Capacity */}
           <div>
-            <div className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <Building2 className="w-4 h-4 text-blue-600" />
+            <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2 font-mono">
+              <Building2 className="w-4 h-4 text-emerald-400" />
               Generation Facility & Grid Location
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Plant ID & Name <span className="text-rose-500">*</span>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
+                  Plant ID & Name <span className="text-rose-400">*</span>
                 </label>
                 <input 
                   type="text" 
                   value={plantName}
                   onChange={(e) => setPlantName(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
                   placeholder="Mojave Helios Array IV"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Plant Capacity (MW) <span className="text-rose-500">*</span>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
+                  Plant Capacity (MW) <span className="text-rose-400">*</span>
                 </label>
                 <input 
                   type="number" 
                   value={plantCapacityMW}
                   onChange={(e) => setPlantCapacityMW(Number(e.target.value))}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono text-slate-100 focus:outline-none focus:border-emerald-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Grid Region / Location
                 </label>
                 <input 
                   type="text" 
                   value={location}
                   onChange={(e) => setLocation(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
                 />
               </div>
             </div>
           </div>
 
           {/* Section 3: Generation Telemetry & Quantities */}
-          <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
-            <div className="text-xs font-bold text-slate-800 uppercase tracking-wider flex items-center justify-between">
+          <div className="p-4 rounded-xl bg-slate-950/70 border border-slate-800 space-y-3">
+            <div className="text-xs font-bold text-slate-300 uppercase tracking-wider flex items-center justify-between font-mono">
               <span className="flex items-center gap-2">
-                <Activity className="w-4 h-4 text-blue-600" />
+                <Activity className="w-4 h-4 text-emerald-400" />
                 Generation Verification Telemetry (MWh)
               </span>
               {claimedGenerationMWh > verifiedGenerationMWh && (
-                <span className="text-[11px] font-bold text-rose-600 bg-rose-50 px-2 py-0.5 rounded border border-rose-200">
+                <span className="text-[11px] font-bold text-rose-400 bg-rose-500/10 px-2 py-0.5 rounded border border-rose-500/30">
                   Mismatch: +{((claimedGenerationMWh - verifiedGenerationMWh) / (verifiedGenerationMWh || 1) * 100).toFixed(1)}%
                 </span>
               )}
@@ -350,20 +350,20 @@ export const AddRecModal: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Verified Grid Output (MWh)
                 </label>
                 <input 
                   type="number" 
                   value={verifiedGenerationMWh}
                   onChange={(e) => setVerifiedGenerationMWh(Number(e.target.value))}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-emerald-800 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono font-bold text-emerald-400 focus:outline-none focus:border-emerald-500"
                 />
                 <span className="text-[10px] text-slate-500 mt-1 block">Metered SCADA telemetry</span>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
-                  Claimed Generation (MWh) <span className="text-rose-500">*</span>
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
+                  Claimed Generation (MWh) <span className="text-rose-400">*</span>
                 </label>
                 <input 
                   type="number" 
@@ -373,23 +373,23 @@ export const AddRecModal: React.FC = () => {
                     setClaimedGenerationMWh(val);
                     setRecQuantityMWh(val);
                   }}
-                  className={`w-full bg-white border rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none ${
+                  className={`w-full bg-slate-900 border rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-100 focus:outline-none ${
                     claimedGenerationMWh > verifiedGenerationMWh * 1.15
-                      ? 'border-rose-400 bg-rose-50/30'
-                      : 'border-slate-300 focus:border-blue-500'
+                      ? 'border-rose-500/50 bg-rose-950/20'
+                      : 'border-slate-800 focus:border-emerald-500'
                   }`}
                 />
                 <span className="text-[10px] text-slate-500 mt-1 block">Issuer self-reported</span>
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   REC Quantity (1 REC = 1 MWh)
                 </label>
                 <input 
                   type="number" 
                   value={recQuantityMWh}
                   onChange={(e) => setRecQuantityMWh(Number(e.target.value))}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-900 border border-slate-800 rounded-lg px-3 py-2 text-xs font-mono font-bold text-slate-100 focus:outline-none focus:border-emerald-500"
                 />
                 <span className="text-[10px] text-slate-500 mt-1 block">Certificates issued</span>
               </div>
@@ -398,52 +398,52 @@ export const AddRecModal: React.FC = () => {
 
           {/* Section 4: Lifecycle & Ownership */}
           <div>
-            <div className="text-xs font-bold text-slate-800 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <Calendar className="w-4 h-4 text-blue-600" />
+            <div className="text-xs font-bold text-slate-300 uppercase tracking-wider mb-3 flex items-center gap-2 font-mono">
+              <Calendar className="w-4 h-4 text-emerald-400" />
               Ownership & Transfer Behavior
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-4 gap-3">
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Accredited Issuer
                 </label>
                 <input 
                   type="text" 
                   value={issuerName}
                   onChange={(e) => setIssuerName(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Current Owner / Buyer
                 </label>
                 <input 
                   type="text" 
                   value={currentOwnerName}
                   onChange={(e) => setCurrentOwnerName(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Generation Date
                 </label>
                 <input 
                   type="date" 
                   value={generationDate}
                   onChange={(e) => setGenerationDate(e.target.value)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs text-slate-100 focus:outline-none focus:border-emerald-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-semibold text-slate-700 mb-1">
+                <label className="block text-xs font-semibold text-slate-400 mb-1">
                   Lifecycle Status
                 </label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value as RECStatus)}
-                  className="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-semibold text-slate-900 focus:outline-none focus:border-blue-500"
+                  className="w-full bg-slate-950 border border-slate-800 rounded-lg px-3 py-2 text-xs font-semibold text-slate-100 focus:outline-none focus:border-emerald-500"
                 >
                   <option value="ACTIVE">ACTIVE</option>
                   <option value="FLAGGED">FLAGGED</option>
@@ -456,9 +456,9 @@ export const AddRecModal: React.FC = () => {
         </div>
 
         {/* Footer Actions */}
-        <div className="px-6 py-4 bg-slate-50 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <div className="text-xs text-slate-500 flex items-center gap-1.5">
-            <ShieldCheck className="w-4 h-4 text-emerald-600" />
+        <div className="px-6 py-4 bg-slate-950/90 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <div className="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
+            <ShieldCheck className="w-4 h-4 text-emerald-400" />
             <span>SHA-256 fingerprint & ledger block auto-generated on intake.</span>
           </div>
 
@@ -466,7 +466,7 @@ export const AddRecModal: React.FC = () => {
             <button
               type="button"
               onClick={() => setIsAddRecOpen(false)}
-              className="px-4 py-2 rounded-lg border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors w-1/3 sm:w-auto"
+              className="px-4 py-2 rounded-lg border border-slate-800 text-xs font-semibold text-slate-300 hover:bg-slate-800 transition-colors w-1/3 sm:w-auto cursor-pointer"
             >
               Cancel
             </button>
@@ -474,7 +474,7 @@ export const AddRecModal: React.FC = () => {
               type="button"
               onClick={() => handleSave(false)}
               disabled={isProcessing}
-              className="px-4 py-2 rounded-lg border border-slate-300 bg-white hover:bg-slate-100 text-xs font-bold text-slate-800 shadow-xs transition-colors w-1/3 sm:w-auto"
+              className="px-4 py-2 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 text-xs font-bold text-white shadow-xs transition-colors w-1/3 sm:w-auto cursor-pointer"
             >
               Save REC
             </button>
@@ -482,7 +482,7 @@ export const AddRecModal: React.FC = () => {
               type="button"
               onClick={() => handleSave(true)}
               disabled={isProcessing}
-              className="px-5 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold shadow-sm transition-all flex items-center justify-center gap-1.5 w-1/3 sm:w-auto"
+              className="px-5 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold shadow-md shadow-emerald-950/40 transition-all flex items-center justify-center gap-1.5 w-1/3 sm:w-auto cursor-pointer"
             >
               <Sparkles className="w-3.5 h-3.5" />
               {isProcessing ? 'Analyzing...' : 'Save & Analyze'}

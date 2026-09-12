@@ -139,23 +139,23 @@ export const VerificationView: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Top Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-800">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center gap-2">
-            <CheckCircle2 className="w-6 h-6 text-blue-600 shrink-0" />
+          <h1 className="text-2xl font-bold text-white tracking-tight flex items-center gap-2 font-mono">
+            <CheckCircle2 className="w-6 h-6 text-emerald-400 shrink-0" />
             <span>Batch Verification Processing</span>
           </h1>
-          <p className="text-sm text-slate-500 mt-1">
+          <p className="text-sm text-slate-400 mt-1">
             Automated statutory audit pipeline processing large batches against RULE-001 to RULE-007 and SCADA telemetry.
           </p>
         </div>
 
-        {/* Action Buttons (Mandated) */}
-        <div className="flex flex-wrap items-center gap-2.5">
+        {/* Action Buttons */}
+        <div className="flex flex-wrap items-center gap-2.5 font-mono">
           <button
             onClick={handleReRunRulesEngine}
             disabled={isReRunning}
-            className="px-3.5 py-2 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 transition-colors disabled:opacity-50"
+            className="px-3.5 py-2 bg-slate-900 border border-slate-800 hover:bg-slate-800 text-slate-200 text-xs font-semibold rounded-lg shadow-sm flex items-center gap-1.5 transition-colors disabled:opacity-50 cursor-pointer"
           >
             <RefreshCw className={`w-3.5 h-3.5 ${isReRunning ? 'animate-spin' : ''}`} />
             <span>{isReRunning ? 'Executing Engine...' : 'Re-Run Rules Engine'}</span>
@@ -163,7 +163,7 @@ export const VerificationView: React.FC = () => {
 
           <button
             onClick={handleExportReport}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold rounded-lg shadow-xs flex items-center gap-1.5 transition-colors"
+            className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-semibold rounded-lg shadow-md shadow-emerald-950/40 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Download className="w-3.5 h-3.5" />
             <span>Export Verification Report</span>
@@ -171,12 +171,12 @@ export const VerificationView: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter Tabs (Mandated: All, Low, Medium, High, Critical, Flagged only) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-200 text-xs">
+      {/* Filter Tabs */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-2 border-b border-slate-800 text-xs font-mono">
         <button
           onClick={() => { setActiveFilter('ALL'); setPage(1); }}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-            activeFilter === 'ALL' ? 'bg-slate-900 text-white' : 'text-slate-600 hover:bg-slate-100'
+          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap cursor-pointer ${
+            activeFilter === 'ALL' ? 'bg-slate-800 text-white border border-slate-700 font-bold' : 'text-slate-400 hover:bg-slate-800/60'
           }`}
         >
           All ({counts.all})
@@ -184,8 +184,8 @@ export const VerificationView: React.FC = () => {
 
         <button
           onClick={() => { setActiveFilter('LOW'); setPage(1); }}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-            activeFilter === 'LOW' ? 'bg-emerald-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap cursor-pointer ${
+            activeFilter === 'LOW' ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/40 font-bold' : 'text-slate-400 hover:bg-slate-800/60'
           }`}
         >
           Low ({counts.low})
@@ -193,8 +193,8 @@ export const VerificationView: React.FC = () => {
 
         <button
           onClick={() => { setActiveFilter('MEDIUM'); setPage(1); }}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-            activeFilter === 'MEDIUM' ? 'bg-amber-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap cursor-pointer ${
+            activeFilter === 'MEDIUM' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40 font-bold' : 'text-slate-400 hover:bg-slate-800/60'
           }`}
         >
           Medium ({counts.medium})
@@ -202,8 +202,8 @@ export const VerificationView: React.FC = () => {
 
         <button
           onClick={() => { setActiveFilter('HIGH'); setPage(1); }}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-            activeFilter === 'HIGH' ? 'bg-orange-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap cursor-pointer ${
+            activeFilter === 'HIGH' ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40 font-bold' : 'text-slate-400 hover:bg-slate-800/60'
           }`}
         >
           High ({counts.high})
@@ -211,8 +211,8 @@ export const VerificationView: React.FC = () => {
 
         <button
           onClick={() => { setActiveFilter('CRITICAL'); setPage(1); }}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-            activeFilter === 'CRITICAL' ? 'bg-rose-600 text-white' : 'text-slate-600 hover:bg-slate-100'
+          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap cursor-pointer ${
+            activeFilter === 'CRITICAL' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40 font-bold' : 'text-slate-400 hover:bg-slate-800/60'
           }`}
         >
           Critical ({counts.critical})
@@ -220,8 +220,8 @@ export const VerificationView: React.FC = () => {
 
         <button
           onClick={() => { setActiveFilter('FLAGGED'); setPage(1); }}
-          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap ${
-            activeFilter === 'FLAGGED' ? 'bg-rose-700 text-white font-bold' : 'text-slate-600 hover:bg-slate-100'
+          className={`px-3 py-1.5 rounded-lg font-medium transition-colors whitespace-nowrap cursor-pointer ${
+            activeFilter === 'FLAGGED' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/40 font-bold' : 'text-slate-400 hover:bg-slate-800/60'
           }`}
         >
           Flagged Only ({counts.flagged})
@@ -229,56 +229,56 @@ export const VerificationView: React.FC = () => {
       </div>
 
       {/* Search Input Toolbar */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 font-mono">
         <div className="relative flex-1 max-w-md">
           <input
             type="text"
             placeholder="Search REC ID, plant name, or fraud rule (e.g. RULE-002)..."
             value={searchTerm}
             onChange={(e) => { setSearchTerm(e.target.value); setPage(1); }}
-            className="w-full bg-white border border-slate-300 rounded-lg pl-8 pr-3 py-2 text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:border-blue-500 shadow-xs"
+            className="w-full bg-slate-950 border border-slate-800 rounded-lg pl-8 pr-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-emerald-500"
           />
-          <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+          <Search className="w-3.5 h-3.5 text-slate-500 absolute left-2.5 top-2.5" />
         </div>
 
-        <div className="text-xs text-slate-500">
-          Showing <span className="font-semibold text-slate-800">{filteredRecs.length}</span> audited certificates
+        <div className="text-xs text-slate-400">
+          Showing <span className="font-semibold text-white">{filteredRecs.length}</span> audited certificates
         </div>
       </div>
 
-      {/* Verification Table (Mandated Columns: REC ID, Risk Score, Risk Level, Flagged Rules, Status) */}
-      <div className="bg-white border border-slate-200 rounded-xl shadow-xs overflow-hidden">
+      {/* Verification Table */}
+      <div className="bg-slate-900 border border-slate-800 rounded-xl shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-slate-50 text-slate-600 font-semibold border-b border-slate-200">
+            <thead className="bg-slate-950/80 text-slate-400 font-mono font-semibold border-b border-slate-800 uppercase tracking-wider text-[10px]">
               <tr>
-                <th className="py-3 px-4">REC ID</th>
-                <th className="py-3 px-4">Facility / Source</th>
-                <th className="py-3 px-4">Risk Score</th>
-                <th className="py-3 px-4">Risk Level</th>
-                <th className="py-3 px-4">Flagged Rules</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-right">Actions</th>
+                <th className="py-3.5 px-4">REC ID</th>
+                <th className="py-3.5 px-4">Facility / Source</th>
+                <th className="py-3.5 px-4">Risk Score</th>
+                <th className="py-3.5 px-4">Risk Level</th>
+                <th className="py-3.5 px-4">Flagged Rules</th>
+                <th className="py-3.5 px-4">Status</th>
+                <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 text-slate-700">
+            <tbody className="divide-y divide-slate-800/60 text-slate-300">
               {paginatedRecs.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-8 text-center text-slate-500">
+                  <td colSpan={7} className="py-8 text-center text-slate-500 font-mono">
                     No certificates found matching criteria.
                   </td>
                 </tr>
               ) : (
                 paginatedRecs.map((rec, idx) => (
-                  <tr key={`verif-rec-${rec.id}-${idx}`} className="hover:bg-slate-50 transition-colors">
+                  <tr key={`verif-rec-${rec.id}-${idx}`} className="hover:bg-slate-800/50 transition-colors">
                     {/* REC ID */}
-                    <td className="py-3.5 px-4 font-mono font-bold text-slate-900">
+                    <td className="py-3.5 px-4 font-mono font-bold text-emerald-400">
                       <button
                         onClick={() => {
                           inspectRec(rec.id);
                           setActiveTab('risk-intelligence');
                         }}
-                        className="text-blue-600 hover:underline"
+                        className="hover:underline cursor-pointer"
                         title="Open in Risk Intelligence"
                       >
                         {rec.id}
@@ -287,17 +287,17 @@ export const VerificationView: React.FC = () => {
 
                     {/* Facility */}
                     <td className="py-3.5 px-4">
-                      <div className="font-semibold text-slate-900 truncate max-w-[180px]">{rec.plantName}</div>
-                      <div className="text-[11px] text-slate-500">{rec.energySource} • {rec.plantCapacityMW} MW</div>
+                      <div className="font-semibold text-slate-100 truncate max-w-[180px]">{rec.plantName}</div>
+                      <div className="text-[11px] text-slate-400 font-mono">{rec.energySource} • {rec.plantCapacityMW} MW</div>
                     </td>
 
                     {/* Risk Score */}
                     <td className="py-3.5 px-4 font-mono font-bold text-sm">
                       <span className={
-                        rec.computedRiskScore > 80 ? 'text-rose-600' :
-                        rec.computedRiskScore > 60 ? 'text-orange-600' :
-                        rec.computedRiskScore > 30 ? 'text-amber-600' :
-                        'text-emerald-600'
+                        rec.computedRiskScore > 80 ? 'text-rose-400' :
+                        rec.computedRiskScore > 60 ? 'text-orange-400' :
+                        rec.computedRiskScore > 30 ? 'text-amber-400' :
+                        'text-emerald-400'
                       }>
                         {rec.computedRiskScore}/100
                       </span>
@@ -315,14 +315,14 @@ export const VerificationView: React.FC = () => {
                           {rec.flaggedRules.map((rule, rIdx) => (
                             <span 
                               key={`rule-${rule}-${rIdx}`}
-                              className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-50 text-rose-700 border border-rose-200"
+                              className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-rose-500/10 text-rose-400 border border-rose-500/30"
                             >
                               {rule}
                             </span>
                           ))}
                         </div>
                       ) : (
-                        <span className="text-[11px] text-emerald-700 flex items-center gap-1">
+                        <span className="text-[11px] text-emerald-400 font-mono flex items-center gap-1">
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>0 Violations</span>
                         </span>
@@ -331,11 +331,11 @@ export const VerificationView: React.FC = () => {
 
                     {/* Status */}
                     <td className="py-3.5 px-4">
-                      <span className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                        rec.status === 'ACTIVE' ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' :
-                        rec.status === 'FLAGGED' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
-                        rec.status === 'RETIRED' ? 'bg-slate-100 text-slate-700' :
-                        'bg-amber-50 text-amber-700 border border-amber-200'
+                      <span className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full border ${
+                        rec.status === 'ACTIVE' ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/30' :
+                        rec.status === 'FLAGGED' ? 'bg-rose-500/10 text-rose-400 border-rose-500/30' :
+                        rec.status === 'RETIRED' ? 'bg-slate-800 text-slate-400 border-slate-700' :
+                        'bg-amber-500/10 text-amber-400 border-amber-500/30'
                       }`}>
                         {rec.status}
                       </span>
@@ -348,10 +348,10 @@ export const VerificationView: React.FC = () => {
                           inspectRec(rec.id);
                           setActiveTab('risk-intelligence');
                         }}
-                        className="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition-colors inline-flex items-center gap-1"
+                        className="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white text-xs font-semibold rounded-lg border border-slate-700 transition-colors inline-flex items-center gap-1 cursor-pointer font-mono"
                       >
                         <span>Inspect</span>
-                        <ArrowUpRight className="w-3 h-3" />
+                        <ArrowUpRight className="w-3 h-3 text-emerald-400" />
                       </button>
                     </td>
                   </tr>
@@ -362,7 +362,7 @@ export const VerificationView: React.FC = () => {
         </div>
 
         {/* Pagination Footer */}
-        <div className="p-4 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
+        <div className="p-4 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400 font-mono">
           <div>
             Page {page} of {totalPages}
           </div>
@@ -370,14 +370,14 @@ export const VerificationView: React.FC = () => {
             <button
               onClick={() => setPage(p => Math.max(1, p - 1))}
               disabled={page === 1}
-              className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-700 font-semibold disabled:opacity-40"
+              className="px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 font-semibold disabled:opacity-40 hover:bg-slate-800 transition-colors cursor-pointer"
             >
               Previous
             </button>
             <button
               onClick={() => setPage(p => Math.min(totalPages, p + 1))}
               disabled={page === totalPages}
-              className="px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-slate-700 font-semibold disabled:opacity-40"
+              className="px-3 py-1.5 bg-slate-950 border border-slate-800 rounded-lg text-slate-300 font-semibold disabled:opacity-40 hover:bg-slate-800 transition-colors cursor-pointer"
             >
               Next
             </button>

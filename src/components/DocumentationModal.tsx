@@ -19,32 +19,32 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ isOpen, 
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-900/50 backdrop-blur-xs animate-in fade-in">
-      <div className="bg-white border border-slate-200 rounded-xl w-full max-w-5xl h-[92vh] sm:h-[88vh] flex flex-col shadow-2xl overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-slate-950/80 backdrop-blur-sm animate-in fade-in">
+      <div className="bg-slate-900 border border-slate-800 rounded-xl w-full max-w-5xl h-[92vh] sm:h-[88vh] flex flex-col shadow-2xl overflow-hidden text-slate-100">
         {/* Modal Header */}
-        <div className="p-3 sm:p-4 md:px-6 border-b border-slate-200 flex items-center justify-between bg-slate-50">
+        <div className="p-3 sm:p-4 md:px-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/80">
           <div className="flex items-center gap-2.5 sm:gap-3 min-w-0">
-            <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center shrink-0">
+            <div className="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 flex items-center justify-center shrink-0">
               <BookOpen className="w-4 h-4" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-sm sm:text-base font-bold text-slate-900 flex flex-wrap items-center gap-1.5 sm:gap-2">
+              <h3 className="text-sm sm:text-base font-bold text-white flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <span>REC-GUARD AI Architecture</span>
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-blue-100 text-blue-800 font-bold">Hackathon Dossier</span>
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 font-bold">Hackathon Dossier</span>
               </h3>
-              <p className="text-[11px] sm:text-xs text-slate-500 truncate">Enterprise REC Fraud Detection, AI Pipeline, and Ledger Specifications</p>
+              <p className="text-[11px] sm:text-xs text-slate-400 truncate">Enterprise REC Fraud Detection, AI Pipeline, and Ledger Specifications</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200 transition-colors shrink-0"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors shrink-0 cursor-pointer"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Sub-nav tabs */}
-        <div className="flex items-center gap-1 px-3 sm:px-6 border-b border-slate-200 bg-white overflow-x-auto">
+        <div className="flex items-center gap-1 px-3 sm:px-6 border-b border-slate-800 bg-slate-950/60 overflow-x-auto">
           {[
             { id: 'overview', label: '1. Architecture & Threat Model', icon: Shield },
             { id: 'schema', label: '2. PostgreSQL DDL Schema', icon: Database },
@@ -58,10 +58,10 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ isOpen, 
               <button
                 key={t.id}
                 onClick={() => setActiveDocTab(t.id as any)}
-                className={`flex items-center gap-2 py-3 px-3 text-xs font-semibold border-b-2 whitespace-nowrap transition-colors ${
+                className={`flex items-center gap-2 py-3 px-3 text-xs font-semibold border-b-2 whitespace-nowrap transition-colors cursor-pointer ${
                   activeDocTab === t.id
-                    ? 'border-blue-600 text-blue-700 font-bold'
-                    : 'border-transparent text-slate-500 hover:text-slate-800'
+                    ? 'border-emerald-400 text-emerald-400 font-bold'
+                    : 'border-transparent text-slate-400 hover:text-slate-200'
                 }`}
               >
                 <Icon className="w-3.5 h-3.5" />
@@ -72,11 +72,11 @@ export const DocumentationModal: React.FC<DocumentationModalProps> = ({ isOpen, 
         </div>
 
         {/* Content Body */}
-        <div className="p-6 overflow-y-auto flex-1 text-slate-700 text-xs md:text-sm space-y-6 bg-slate-50/50">
+        <div className="p-6 overflow-y-auto flex-1 text-slate-300 text-xs md:text-sm space-y-6 bg-slate-950/40 custom-scrollbar">
           {activeDocTab === 'overview' && (
             <div className="space-y-4">
-              <h4 className="text-base font-bold text-slate-900">End-to-End System Pipeline</h4>
-              <div className="p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs leading-relaxed overflow-x-auto shadow-inner">
+              <h4 className="text-base font-bold text-white font-mono">End-to-End System Pipeline</h4>
+              <div className="p-4 rounded-xl bg-slate-950 text-emerald-400 font-mono text-xs leading-relaxed overflow-x-auto shadow-inner border border-slate-800">
                 <pre>{`Renewable Energy Plants (Solar / Wind / Hydro / Geothermal)
         ↓
 IoT Smart Meter Telemetry (SCADA / Modbus Feeder Data)
@@ -96,23 +96,23 @@ Permissioned DLT Ledger (Tamper-Evident Hash Chain)
 REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
               </div>
 
-              <h5 className="font-bold text-slate-900 pt-2">Threat Vectors Mitigated:</h5>
+              <h5 className="font-bold text-white pt-2 font-mono">Threat Vectors Mitigated:</h5>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <div className="font-bold text-rose-700 text-xs">Duplicate Generation Claims</div>
-                  <p className="text-xs text-slate-600 mt-1">Cross-registry duplicate generation ID detection preventing the same MWh batch from being issued twice.</p>
+                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 shadow-sm">
+                  <div className="font-bold text-rose-400 text-xs font-mono">Duplicate Generation Claims</div>
+                  <p className="text-xs text-slate-400 mt-1">Cross-registry duplicate generation ID detection preventing the same MWh batch from being issued twice.</p>
                 </div>
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <div className="font-bold text-orange-700 text-xs">Generation Output Mismatch</div>
-                  <p className="text-xs text-slate-600 mt-1">Comparing claimed volume against verified revenue meter logs via direct inverter integration.</p>
+                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 shadow-sm">
+                  <div className="font-bold text-amber-400 text-xs font-mono">Generation Output Mismatch</div>
+                  <p className="text-xs text-slate-400 mt-1">Comparing claimed volume against verified revenue meter logs via direct inverter integration.</p>
                 </div>
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <div className="font-bold text-amber-700 text-xs">Retirement Reuse (Double-Claiming)</div>
-                  <p className="text-xs text-slate-600 mt-1">Detecting and invalidating certificates traded or claimed after Scope 2 retirement has occurred.</p>
+                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 shadow-sm">
+                  <div className="font-bold text-orange-400 text-xs font-mono">Retirement Reuse (Double-Claiming)</div>
+                  <p className="text-xs text-slate-400 mt-1">Detecting and invalidating certificates traded or claimed after Scope 2 retirement has occurred.</p>
                 </div>
-                <div className="p-3.5 rounded-xl bg-white border border-slate-200 shadow-2xs">
-                  <div className="font-bold text-blue-700 text-xs">Wash Trading & Circular Transfer</div>
-                  <p className="text-xs text-slate-600 mt-1">Graph-based analysis flagging rapid entity turnover before scheduled regulatory filing windows.</p>
+                <div className="p-3.5 rounded-xl bg-slate-950/80 border border-slate-800 shadow-sm">
+                  <div className="font-bold text-sky-400 text-xs font-mono">Wash Trading & Circular Transfer</div>
+                  <p className="text-xs text-slate-400 mt-1">Graph-based analysis flagging rapid entity turnover before scheduled regulatory filing windows.</p>
                 </div>
               </div>
             </div>
@@ -121,16 +121,16 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
           {activeDocTab === 'schema' && (
             <div className="space-y-4">
               <div className="flex items-center justify-between">
-                <h4 className="text-base font-bold text-slate-900">PostgreSQL Relational Schema</h4>
+                <h4 className="text-base font-bold text-white font-mono">PostgreSQL Relational Schema</h4>
                 <button
                   onClick={() => copyToClipboard(SQL_SCHEMA, 'sql')}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded bg-white border border-slate-300 hover:bg-slate-50 text-xs font-semibold text-slate-700 shadow-2xs"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded bg-slate-800 border border-slate-700 hover:bg-slate-700 text-xs font-semibold text-slate-200 shadow-sm transition-colors cursor-pointer"
                 >
-                  {copiedCode === 'sql' ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                  {copiedCode === 'sql' ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
                   <span>Copy SQL</span>
                 </button>
               </div>
-              <pre className="p-4 rounded-xl bg-slate-900 font-mono text-[11px] text-slate-200 overflow-x-auto max-h-96 shadow-inner">
+              <pre className="p-4 rounded-xl bg-slate-950 font-mono text-[11px] text-slate-200 overflow-x-auto max-h-96 shadow-inner border border-slate-800 custom-scrollbar">
                 <code>{SQL_SCHEMA}</code>
               </pre>
             </div>
@@ -138,7 +138,7 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
 
           {activeDocTab === 'api' && (
             <div className="space-y-4">
-              <h4 className="text-base font-bold text-slate-900">FastAPI RESTful Endpoints Specification</h4>
+              <h4 className="text-base font-bold text-white font-mono">FastAPI RESTful Endpoints Specification</h4>
               <div className="space-y-2 font-mono text-xs">
                 {[
                   { method: 'GET', path: '/api/recs', desc: 'List and filter RECs with pagination, risk banding, and owner filtering' },
@@ -153,16 +153,16 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
                   { method: 'GET', path: '/api/network', desc: 'Extract graph entities and edges for wash trading analysis' },
                   { method: 'POST', path: '/api/dataset/generate', desc: 'Produce synthetic dataset for benchmark testing' }
                 ].map((ep) => (
-                  <div key={`endpoint-${ep.method}-${ep.path}`} className="p-3 rounded-lg bg-white border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-2 shadow-2xs">
+                  <div key={`endpoint-${ep.method}-${ep.path}`} className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-2 shadow-xs">
                     <div className="flex items-center gap-2">
                       <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        ep.method === 'GET' ? 'bg-blue-100 text-blue-800' : 'bg-emerald-100 text-emerald-800'
+                        ep.method === 'GET' ? 'bg-sky-500/10 text-sky-400 border border-sky-500/30' : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/30'
                       }`}>
                         {ep.method}
                       </span>
-                      <span className="text-slate-900 font-bold">{ep.path}</span>
+                      <span className="text-white font-bold">{ep.path}</span>
                     </div>
-                    <span className="text-slate-600 font-sans text-xs">{ep.desc}</span>
+                    <span className="text-slate-400 font-sans text-xs">{ep.desc}</span>
                   </div>
                 ))}
               </div>
@@ -171,23 +171,23 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
 
           {activeDocTab === 'ai-ml' && (
             <div className="space-y-4">
-              <h4 className="text-base font-bold text-slate-900">Machine Learning & Explainable AI Philosophy</h4>
-              <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
-                <div className="font-bold text-blue-700">Critical Core Principle:</div>
-                <p className="text-slate-800 font-medium">
+              <h4 className="text-base font-bold text-white font-mono">Machine Learning & Explainable AI Philosophy</h4>
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 shadow-xs space-y-2">
+                <div className="font-bold text-emerald-400 font-mono">Critical Core Principle:</div>
+                <p className="text-slate-200 font-medium italic">
                   "AI does not automatically declare fraud. AI surfaces high-dimensional anomalies for human forensic investigation."
                 </p>
-                <p className="text-slate-600 text-xs">
+                <p className="text-slate-400 text-xs">
                   Isolation Forest functions as an unsupervised outlier detector across 10 distinct features: Plant capacity, historical generation baselines, current claimed output, generation logging cadence, batch volume, issuance frequency, transfer velocity, minimum transfer interval, historical deviation, and claimed vs verified ratios.
                 </p>
               </div>
 
-              <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-2xs space-y-2">
-                <h5 className="font-bold text-slate-900">Scoring Formula & Factor Decomposition:</h5>
-                <p className="font-mono text-xs text-blue-800 font-semibold">
+              <div className="p-4 rounded-xl bg-slate-950/80 border border-slate-800 shadow-xs space-y-2">
+                <h5 className="font-bold text-white font-mono">Scoring Formula & Factor Decomposition:</h5>
+                <p className="font-mono text-xs text-emerald-400 font-semibold">
                   Final Risk Score = min(100, Σ Rule Contributions + AI Anomaly Score (20) + Historical Deviation (6))
                 </p>
-                <ul className="list-disc list-inside text-xs text-slate-600 space-y-1">
+                <ul className="list-disc list-inside text-xs text-slate-400 space-y-1 font-mono">
                   <li>RULE-001 / RULE-002: Duplicate REC ID or Generation ID (+30 pts)</li>
                   <li>RULE-003: Claimed output exceeds SCADA meter (+15 to +25 pts)</li>
                   <li>RULE-004: Over-issuance exceeds plant physical capacity (+25 pts)</li>
@@ -202,14 +202,14 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
 
           {activeDocTab === 'ledger' && (
             <div className="space-y-4">
-              <h4 className="text-base font-bold text-slate-900">Permissioned DLT & Cryptographic Architecture</h4>
-              <p className="text-slate-600">
+              <h4 className="text-base font-bold text-white font-mono">Permissioned DLT & Cryptographic Architecture</h4>
+              <p className="text-slate-300">
                 This prototype utilizes a permissioned ledger abstraction designed for direct integration with <strong>Hyperledger Fabric v2.5</strong> or standard verifiable data registries.
               </p>
-              <div className="p-4 rounded-xl bg-slate-900 text-slate-200 space-y-2 font-mono text-xs shadow-inner">
+              <div className="p-4 rounded-xl bg-slate-950 text-slate-200 space-y-2 font-mono text-xs border border-slate-800 shadow-inner">
                 <div className="text-emerald-400 font-bold">SHA-256 Certificate Fingerprint Formula:</div>
                 <div>Hash = SHA256(rec_id | plant_id | generation_id | energy_mwh | issuance_date | issuer_id)</div>
-                <div className="text-cyan-400 font-bold pt-2">Chained Block Hash:</div>
+                <div className="text-teal-400 font-bold pt-2">Chained Block Hash:</div>
                 <div>Block_N_Hash = SHA256(Block_N-1_Hash | block_number | timestamp | actor | rec_id | event | payload)</div>
               </div>
             </div>
@@ -217,8 +217,8 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
 
           {activeDocTab === 'datasets' && (
             <div className="space-y-4">
-              <h4 className="text-base font-bold text-slate-900">Potential Real-World Data Sources</h4>
-              <p className="text-slate-600">
+              <h4 className="text-base font-bold text-white font-mono">Potential Real-World Data Sources</h4>
+              <p className="text-slate-300">
                 For production deployment, real generation feeds can be mapped from these legitimate public sources:
               </p>
               <div className="space-y-2">
@@ -228,9 +228,9 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
                   { name: 'Open Power System Data (OPSD)', desc: 'Aggregated time-series electricity generation profiles for European power systems.' },
                   { name: 'ENTSO-E Transparency Platform', desc: 'Statutory real-time generation per unit across all European balancing markets.' }
                 ].map((s) => (
-                  <div key={`datasource-${s.name}`} className="p-3 rounded-lg bg-white border border-slate-200 shadow-2xs">
-                    <div className="font-bold text-slate-900 text-xs">{s.name}</div>
-                    <div className="text-xs text-slate-600 mt-0.5">{s.desc}</div>
+                  <div key={`datasource-${s.name}`} className="p-3 rounded-lg bg-slate-950/80 border border-slate-800 shadow-xs">
+                    <div className="font-bold text-white text-xs font-mono">{s.name}</div>
+                    <div className="text-xs text-slate-400 mt-0.5">{s.desc}</div>
                   </div>
                 ))}
               </div>
@@ -239,10 +239,10 @@ REC Digital Passport & Real-Time SOC Investigation Terminal`}</pre>
         </div>
 
         {/* Modal Footer */}
-        <div className="p-4 border-t border-slate-200 flex justify-end bg-slate-50">
+        <div className="p-4 border-t border-slate-800 flex justify-end bg-slate-950/80">
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-colors"
+            className="px-4 py-2 rounded-lg bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white font-semibold text-xs transition-all shadow-md shadow-emerald-950/40 cursor-pointer"
           >
             Close Documentation
           </button>

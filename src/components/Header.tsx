@@ -7,8 +7,6 @@ import React, { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { 
   Search, 
-  FileText, 
-  Bell, 
   Zap,
   PlusCircle,
   LogOut,
@@ -18,7 +16,7 @@ import {
 import { toCanonicalRole } from '../types';
 
 interface HeaderProps {
-  onOpenDocs: () => void;
+  onOpenDocs?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({ onOpenDocs }) => {
@@ -162,31 +160,6 @@ export const Header: React.FC<HeaderProps> = ({ onOpenDocs }) => {
             <span className="hidden lg:inline">Register REC</span>
           </button>
         )}
-
-        {/* System Specs & Architecture Docs */}
-        <button
-          onClick={onOpenDocs}
-          className="p-2 rounded-xl bg-slate-800/70 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer"
-          title="System Architecture & Threat Model Documentation"
-          aria-label="View system documentation"
-        >
-          <FileText className="w-4 h-4" />
-        </button>
-
-        {/* Alerts Bell */}
-        <button
-          onClick={() => setActiveTab('investigations')}
-          className="relative p-2 rounded-xl bg-slate-800/70 hover:bg-slate-800 border border-slate-800 text-slate-300 hover:text-white transition-colors min-h-[38px] min-w-[38px] flex items-center justify-center cursor-pointer"
-          title="Fraud & Discrepancy Alerts"
-          aria-label="View fraud alerts"
-        >
-          <Bell className="w-4 h-4" />
-          {openAlertsCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-rose-500 text-white font-bold text-[10px] flex items-center justify-center shadow-xs">
-              {openAlertsCount}
-            </span>
-          )}
-        </button>
 
         {/* Role Identity Badge (Strict RBAC) */}
         <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
