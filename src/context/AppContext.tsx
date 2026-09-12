@@ -69,12 +69,10 @@ export type AppTab =
 interface AppContextType {
   currentUser: UserProfile;
   setCurrentUser: (user: UserProfile) => void;
-  switchRole: (role: UserRole) => void;
   
   isAuthenticated: boolean;
   setIsAuthenticated: (val: boolean) => void;
   login: (identifier: string, password?: string) => boolean;
-  loginAsRole: (role: 'admin' | 'auditor' | 'issuer' | 'buyer' | UserRole) => boolean;
   logout: () => void;
   demoCredentials: Record<DemoRoleKey, DemoCredential>;
 
@@ -112,19 +110,6 @@ interface AppContextType {
   modelMetrics: ModelMetrics;
   runAiDetection: (contamination?: number) => void;
   isAiTraining: boolean;
-  
-  liveMonitoring: boolean;
-  setLiveMonitoring: (enabled: boolean) => void;
-  
-  // Guided Demo Walkthrough
-  guidedDemoActive: boolean;
-  setGuidedDemoActive: (active: boolean) => void;
-  guidedDemoStep: number;
-  setGuidedDemoStep: (step: number) => void;
-  startGuidedDemo: () => void;
-  nextDemoStep: () => void;
-  prevDemoStep: () => void;
-  exitGuidedDemo: () => void;
   
   // Quick Search & Notifications
   searchQuery: string;
@@ -234,11 +219,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   });
   
   const [isAiTraining, setIsAiTraining] = useState(false);
-  const [liveMonitoring, setLiveMonitoring] = useState(false);
-  
-  // Guided demo
-  const [guidedDemoActive, setGuidedDemoActive] = useState(false);
-  const [guidedDemoStep, setGuidedDemoStep] = useState(1);
   
   // Search & Toasts
   const [searchQuery, setSearchQuery] = useState('');
@@ -262,16 +242,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const removeToast = useCallback((id: string) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
-
-  const switchRole = useCallback((role: UserRole) => {
-    const user = DEMO_USERS.find(u => u.role === role) || DEMO_USERS[0];
-    setCurrentUser(user);
-    addToast({
-      type: 'info',
-      title: 'Switched Active Persona',
-      message: `Operating as ${user.name} (${user.role.replace('_', ' ')})`
-    });
-  }, [addToast]);
 
   const addAuditLog = useCallback((entry: Omit<AuditLogEntry, 'id' | 'timestamp'>) => {
     const newEntry: AuditLogEntry = {
@@ -307,37 +277,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         ipAddress: '192.168.1.10',
         result: 'SUCCESS',
         details: `Signed into REC-GUARD AI via secure role authentication (${result.user.role}). Redirected to ${targetPath}.`
-      });
-      return true;
-    }
-    return false;
-  }, [addToast, addAuditLog]);
-
-  const loginAsRole = useCallback((role: 'admin' | 'auditor' | 'issuer' | 'buyer' | UserRole): boolean => {
-    const result = authService.authenticateRole(role);
-    if (result.success && result.user) {
-      setCurrentUser(result.user);
-      setIsAuthenticated(true);
-      const canonical = toCanonicalRole(result.user.role).toLowerCase();
-      const targetPath = `/${canonical}/dashboard`;
-      setCurrentPath(targetPath);
-      if (typeof window !== 'undefined') {
-        window.history.pushState({}, '', targetPath);
-      }
-      setActiveTab('dashboard');
-      addToast({
-        type: 'success',
-        title: 'Role Session Activated',
-        message: `Operating as ${result.user.name} (${canonical.toUpperCase()})`
-      });
-      addAuditLog({
-        userId: result.user.id,
-        userName: result.user.name,
-        userRole: result.user.role,
-        action: 'ROLE_LOGIN_DIRECT',
-        ipAddress: '192.168.1.10',
-        result: 'SUCCESS',
-        details: `Direct role login activated for ${result.user.role}. Redirected to ${targetPath}.`
       });
       return true;
     }
@@ -802,153 +741,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }, 400);
   }, [addToast]);
 
-  // Live monitoring simulation stream
-  useEffect(() => {
-    if (!liveMonitoring) return;
-
-    const interval = setInterval(() => {
-      const idNum = Math.floor(20000 + Math.random() * 9000);
-      const recId = `REC-${idNum}`;
-      const isAnomaly = Math.random() < 0.28; // ~28% chance of interesting anomaly in live demo mode
-      
-      const claimed = isAnomaly ? 14200 : 8400;
-      const verified = isAnomaly ? 6100 : 8400;
-      const risk = isAnomaly ? Math.floor(75 + Math.random() * 20) : Math.floor(8 + Math.random() * 15);
-      const riskBand = risk > 80 ? 'CRITICAL' : risk > 60 ? 'HIGH' : risk > 30 ? 'MEDIUM' : 'LOW';
-
-      const incomingRec: RECRecord = {
-        id: recId,
-        plantId: isAnomaly ? 'SOLAR-031' : 'WIND-012',
-        plantName: isAnomaly ? 'Desert Sun PV Station Alpha' : 'Midwest Prairie Wind 8',
-        plantCapacityMW: isAnomaly ? 95 : 150,
-        energySource: isAnomaly ? 'SOLAR' : 'WIND',
-        location: isAnomaly ? 'Nevada, US' : 'Iowa, US',
-        generationId: `GEN-STREAM-${idNum}`,
-        claimedGenerationMWh: claimed,
-        verifiedGenerationMWh: verified,
-        eligibleRenewableMWh: verified,
-        energyQuantityMWh: claimed,
-        issuerId: 'ISS-STREAM-01',
-        issuerName: 'WestGrid Registries',
-        currentOwnerId: 'BUY-AERO-01',
-        currentOwnerName: 'AeroTech Global Technologies',
-        generationDate: new Date().toISOString().slice(0, 10),
-        issuanceDate: new Date().toISOString().slice(0, 10),
-        status: isAnomaly ? 'FLAGGED' : 'ACTIVE',
-        riskScore: risk,
-        riskBand,
-        anomalyScore: isAnomaly ? 0.82 : 0.18,
-        isAnomaly,
-        scoreBreakdown: {
-          duplicateClaim: 0,
-          generationMismatch: isAnomaly ? 25 : 0,
-          aiAnomaly: isAnomaly ? 20 : 0,
-          transferAnomaly: isAnomaly ? 10 : 0,
-          historicalPattern: 0,
-          overIssuance: isAnomaly ? 30 : 0,
-          retirementReuse: 0
-        },
-        flagReasons: isAnomaly ? [
-          `Streaming Anomaly: Claimed generation exceeds smart-meter output by 132.8%.`,
-          `High-dimensional Isolation Forest outlier flagged in real-time stream.`
-        ] : ['Telemetry certified by smart grid inverter.'],
-        recommendedAction: isAnomaly ? 'Immediate freeze on smart-meter feed.' : 'Clear for Scope 2 ledger entry.',
-        fingerprintSha256: fallbackSha256(`${recId}|${claimed}|${verified}|${Date.now()}`),
-        transferCount: 1,
-        features: {
-          plantCapacityMW: 95,
-          historicalGenMWh: 8000,
-          currentGenMWh: claimed,
-          genFrequencyDays: 30,
-          recQuantity: claimed,
-          issuanceFreqDays: 2,
-          transferFrequency: 1,
-          timeBetweenTransfersHours: 72,
-          historicalDeviationPercent: isAnomaly ? 132.8 : 0,
-          claimedVsVerifiedRatio: claimed / verified
-        }
-      };
-
-      setRecs(prev => [incomingRec, ...prev.slice(0, 1500)]);
-
-      // Append ledger event
-      const newBlock = ledgerSingleton.appendBlock(
-        incomingRec.plantName,
-        incomingRec.id,
-        'ISSUED',
-        { claimedMWh: claimed, verifiedMWh: verified, riskScore: risk }
-      );
-      setLedgerBlocks(prev => [...prev, newBlock]);
-
-      if (isAnomaly) {
-        addToast({
-          type: 'error',
-          title: `LIVE ALERT: ${recId} FLAGGED`,
-          message: `Risk Score: ${risk}/100 (${riskBand}) — Generation discrepancy of 132% detected!`
-        });
-      } else {
-        addToast({
-          type: 'info',
-          title: `LIVE: ${recId} Ingested`,
-          message: `Verified 8,400 MWh output, Risk: ${risk}/100 (LOW)`
-        });
-      }
-    }, 4500);
-
-    return () => clearInterval(interval);
-  }, [liveMonitoring, addToast]);
-
-  // Guided demo navigation
-  const startGuidedDemo = useCallback(() => {
-    setGuidedDemoActive(true);
-    setGuidedDemoStep(1);
-    setSelectedRecId('REC-10231');
-    setActiveTab('registry');
-  }, []);
-
-  const nextDemoStep = useCallback(() => {
-    setGuidedDemoStep(prev => {
-      const next = Math.min(10, prev + 1);
-      // Synchronize views with steps:
-      if (next === 1) setActiveTab('registry');
-      else if (next === 2 || next === 3 || next === 5) setActiveTab('details');
-      else if (next === 4) setActiveTab('ai-intelligence');
-      else if (next === 6) setActiveTab('verification');
-      else if (next === 7) setActiveTab('passport');
-      else if (next === 8) setActiveTab('network');
-      else if (next === 9 || next === 10) setActiveTab('auditor-workspace');
-      return next;
-    });
-  }, []);
-
-  const prevDemoStep = useCallback(() => {
-    setGuidedDemoStep(prev => {
-      const prevStep = Math.max(1, prev - 1);
-      if (prevStep === 1) setActiveTab('registry');
-      else if (prevStep === 2 || prevStep === 3 || prevStep === 5) setActiveTab('details');
-      else if (prevStep === 4) setActiveTab('ai-intelligence');
-      else if (prevStep === 6) setActiveTab('verification');
-      else if (prevStep === 7) setActiveTab('passport');
-      else if (prevStep === 8) setActiveTab('network');
-      else if (prevStep === 9 || prevStep === 10) setActiveTab('auditor-workspace');
-      return prevStep;
-    });
-  }, []);
-
-  const exitGuidedDemo = useCallback(() => {
-    setGuidedDemoActive(false);
-  }, []);
-
   return (
     <AppContext.Provider
       value={{
         currentUser,
         setCurrentUser,
-        switchRole,
         isAuthenticated,
         setIsAuthenticated,
         login,
-        loginAsRole,
         logout,
         demoCredentials: DEMO_CREDENTIALS,
         isAddRecOpen,
@@ -978,16 +778,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         modelMetrics,
         runAiDetection,
         isAiTraining,
-        liveMonitoring,
-        setLiveMonitoring,
-        guidedDemoActive,
-        setGuidedDemoActive,
-        guidedDemoStep,
-        setGuidedDemoStep,
-        startGuidedDemo,
-        nextDemoStep,
-        prevDemoStep,
-        exitGuidedDemo,
         searchQuery,
         setSearchQuery,
         toasts,

@@ -5,8 +5,6 @@
 
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { createServer as createViteServer } from 'vite';
 import { 
   UserProfile, 
   UserRole, 
@@ -24,9 +22,6 @@ import {
   PLANTS_DATA
 } from './src/data/seedData';
 import { fallbackSha256 } from './src/services/cryptoService';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // ==========================================
 // 1. In-Memory Authoritative Data Stores
@@ -889,6 +884,7 @@ async function startServer() {
   // ------------------------------------------
 
   if (process.env.NODE_ENV !== 'production') {
+    const { createServer: createViteServer } = await import('vite');
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: 'spa',
